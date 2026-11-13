@@ -28,6 +28,13 @@ FAVICON = ('<link rel="icon" type="image/png" sizes="48x48" href="images/favicon
            '<link rel="apple-touch-icon" href="images/favicon.png">')
 
 TITRE = "Le fermier au chapeau de paille"
+# Résumé de couverture écrit par Manon (13/11/2026), à garder mot pour mot
+SYNOPSIS = ("Quand l’ombre d’un dragon condamne les récoltes de son village, Kévine, jeune fermier au chapeau de paille, "
+            "part affronter l’inconnu avec Gertrude, sa fidèle renarde. Pour sauver les siens, il devra découvrir qu’un "
+            "héros peut venir des champs.")
+# Mention courte de la couverture ; la mention longue (début de texte.md) est sur la page de contexte
+AVERTISSEMENT_COURT = ("Fan fiction librement inspirée du jeu vidéo Minecraft · "
+                       "Ce livre n’est ni approuvé ni soutenu par Mojang Studios ou Microsoft.")
 AUTEURS = "Antoine et Émile"
 
 # Texte écrit par Manon le 03/11/2026, modèle commun aux livres de l'atelier ; seule la phrase sur le
@@ -57,8 +64,8 @@ CONTEXTE = [
 CSS = """
 @font-face { font-family: "Pixelify Sans"; font-style: normal; font-weight: 400 700; font-display: swap; src: url("fonts/PixelifySans.woff2") format("woff2"); }
 /* Les chiffres de Pixelify Sans se confondent avec des lettres (le 5 ressemble à un S) : les chiffres seuls
-   viennent de Silkscreen, une autre police pixel, plus lisible */
-@font-face { font-family: "Chiffres pixel"; font-weight: 400 700; font-display: swap; src: url("fonts/ChiffresPixel.woff2") format("woff2"); unicode-range: U+30-39; }
+   viennent de Bricolage Grotesque très gras, choisi par Manon (essai F, 13/11/2026) */
+@font-face { font-family: "Chiffres pixel"; font-weight: 400 800; font-display: swap; src: url("fonts/ChiffresBricolage.woff2") format("woff2"); unicode-range: U+30-39; }
 @font-face { font-family: "Source Serif 4"; font-style: normal; font-weight: 400 700; font-display: swap; src: url("fonts/SourceSerif4.woff2") format("woff2"); }
 @font-face { font-family: "Source Serif 4"; font-style: italic; font-weight: 400 700; font-display: swap; src: url("fonts/SourceSerif4-italique.woff2") format("woff2"); }
 
@@ -104,10 +111,10 @@ tw-passage { max-width: 1120px; margin: 0 auto; }
 .separateur { display: flex; align-items: center; justify-content: center; gap: 0.8em; margin: 1.6em 0 1.4em; }
 .separateur .trait { width: 3.2em; height: 3px; background: var(--ciel); }
 /* Les traits prennent la couleur de l'objet */
-.separateur-diamant .trait { background: #3fd3d6; }
-.separateur-flamme .trait { background: #f07f1a; }
-.separateur-oeil .trait { background: #2fae7a; }
-.separateur .objet { width: 30px; height: auto; display: block; }
+.separateur-diamant .trait { background: #2f9bea; }
+.separateur-flamme .trait { background: #f2741c; }
+.separateur-oeil .trait { background: #3fae4a; }
+.separateur .objet { width: 40px; height: 40px; object-fit: contain; display: block; }
 
 /* Renvoi simple (choix A de Manon) : un lien en police pixel bleu nuit, centré sous le séparateur, suivi d'une petite
    flèche en pixels bleu ciel ; il se souligne au survol */
@@ -169,9 +176,10 @@ tw-link:hover, .enchantment-link:hover { color: var(--nuit); text-decoration: un
 .garde-titre { font-family: "Chiffres pixel", "Pixelify Sans", monospace; font-weight: 600; font-size: clamp(2.2rem, 4.4vw, 3.5rem); line-height: 1.12; margin: 0.25em 0 0.35em; }
 .garde-titre span { background: linear-gradient(transparent 62%, var(--paille) 62% 92%, transparent 92%); box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 .noms { display: block; font-size: 1.25rem; }
+.resume { display: block; margin-top: 1.1em; font-size: 1.1rem; line-height: 1.6; }
 .commencer { justify-content: flex-start; margin-top: 1.6em; }
 .commencer tw-link, .commencer .enchantment-link { font-size: 1.55rem; }
-.garde .mention { margin-top: 2.4em; }
+.garde .mention { margin-top: 1.8em; }
 @media (max-width: 820px) {
   .garde { flex-direction: column; gap: 1.4em; min-height: 0; }
   .garde-image { width: 100%; max-width: 480px; }
@@ -253,60 +261,7 @@ def lire_choix(ch):
     return corps, consigne, tirages, options, renvoi, fin
 
 
-# Séparateurs : un petit objet en pixel art (dessiné ici, pas une texture du jeu) entre deux traits bleu ciel.
-# Il suit le voyage de Kévine : la pousse aux champs, le diamant dans la mine, la flamme dans le Nether,
-# l'œil vert sur la piste du portail et dans l'End, puis de nouveau la pousse au retour.
-def pixel_art(motif, couleurs):
-    """Une petite icône SVG à partir d'une grille de lettres (une lettre = une couleur, « . » = vide)."""
-    lignes = motif.strip().split()
-    rects = "".join(f'<rect x="{x}" y="{y}" width="1" height="1" fill="{couleurs[c]}"/>'
-                    for y, ligne in enumerate(lignes) for x, c in enumerate(ligne) if c != ".")
-    return (f'<svg class="objet" viewBox="0 0 {len(lignes[0])} {len(lignes)}" shape-rendering="crispEdges" '
-            f'aria-hidden="true">{rects}</svg>')
-
-
-OBJETS = {
-    "pousse": pixel_art("""
-        ....GG....
-        ...GLLG...
-        .GG.GG.GG.
-        GLLG.T.GLG
-        .GG..T..G.
-        .....T....
-        ..BBBBBB..
-        .BbBBbBBB.
-        BBBBBBbBBB
-        BbBBBBBBbB""", {"G": "#3f8f2a", "L": "#7ccf3c", "T": "#3f8f2a", "B": "#8a5a2b", "b": "#6b4320"}),
-    "diamant": pixel_art("""
-        ...DDDD...
-        ..DCLLCD..
-        .DCLLCCCD.
-        DCCCCCCCCD
-        .DCCCCCCD.
-        ..DCCCCD..
-        ...DCCD...
-        ....DD....""", {"D": "#0e6f75", "C": "#3fd3d6", "L": "#c9fbfb"}),
-    "flamme": pixel_art("""
-        ....R.....
-        ...RR..R..
-        ..RORR.RR.
-        ..ROORRORR
-        .RROYYOORR
-        .ROYYYYOOR
-        .ROYWWYYOR
-        ..ROYYYOR.
-        ...RROOR..""", {"R": "#c2361b", "O": "#f07f1a", "Y": "#ffd23f", "W": "#fff6c2"}),
-    "oeil": pixel_art("""
-        ...EEEE...
-        ..EGGGGE..
-        .EGLGGGGE.
-        EGLGPPGGGE
-        EGGPPPPGGE
-        EGGPPPPGGE
-        .EGGPPGGE.
-        ..EGGGGE..
-        ...EEEE...""", {"E": "#0f4d3a", "G": "#2fae7a", "L": "#a8f0c8", "P": "#0b2a20"}),
-}
+# Séparateurs : un objet en voxel dessiné par Manon (diamant, flamme, œil), entre deux traits de sa couleur.
 
 
 def objet_du_chapitre(cle):
@@ -315,8 +270,9 @@ def objet_du_chapitre(cle):
 
 
 def separateur(objet):
-    return (f'<div class="separateur separateur-{objet}"><span class="trait"></span>{OBJETS[objet]}'
-            '<span class="trait"></span></div>')
+    # Les objets en voxel dessinés par Manon (images/objets/, originaux dans Sources/Objets)
+    return (f'<div class="separateur separateur-{objet}"><span class="trait"></span>'
+            f'<img class="objet" src="images/objets/{objet}.png" alt=""><span class="trait"></span></div>')
 
 
 SEPARATEUR = separateur("diamant")
@@ -395,10 +351,11 @@ def passage_garde(mention):
     return ('<div class="garde"><img class="garde-image" src="images/couverture.jpg" alt="">'
             '<div class="garde-texte"><span class="surtitre">Une histoire dont le lecteur est le héros</span>'
             f'<h1 class="garde-titre"><span>{TITRE}</span></h1><span class="noms">{AUTEURS}</span>'
+            f'<span class="resume">{SYNOPSIS}</span>'
             f'<div class="elan commencer">{lien("Commencer l’aventure", "Prologue")}</div>'
             f'<div class="secondaires">{lien("Comment est née cette histoire", "Comment est née cette histoire")}'
             f'{lien("L’arbre de l’histoire", "L’arbre de l’histoire")}</div>'
-            f'<span class="mention">{mention}</span></div></div>')
+            f'<span class="mention">{AVERTISSEMENT_COURT}</span></div></div>')
 
 
 def passage_contexte(mention):
