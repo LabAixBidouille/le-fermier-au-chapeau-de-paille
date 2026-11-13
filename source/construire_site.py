@@ -192,7 +192,7 @@ tw-passage:has(.garde) { max-width: none; width: 100%; margin: 0; }
 .surtitre { display: block; font-style: italic; font-size: clamp(0.85rem, 2vh, 1.05rem); color: #5c6670; }
 .garde-titre { font-family: "Chiffres pixel", "Pixelify Sans", monospace; font-weight: 600; font-size: clamp(1.6rem, min(4vw, 6vh), 3.3rem); line-height: 1.12; margin: 0.2em 0 0.3em; }
 .garde-titre span { background: linear-gradient(transparent 62%, var(--paille) 62% 92%, transparent 92%); box-decoration-break: clone; -webkit-box-decoration-break: clone; }
-.noms { display: block; font-size: clamp(1rem, 2.6vh, 1.25rem); }
+.noms { display: block; font-style: italic; font-size: clamp(1rem, 2.6vh, 1.25rem); }
 .resume { display: block; margin-top: 0.9em; font-size: clamp(0.92rem, 2.3vh, 1.1rem); line-height: 1.55; }
 .commencer { justify-content: flex-start; margin-top: clamp(0.6em, 2.5vh, 1.6em); }
 .commencer tw-link, .commencer .enchantment-link { font-size: clamp(1.2rem, 3.4vh, 1.55rem); }
