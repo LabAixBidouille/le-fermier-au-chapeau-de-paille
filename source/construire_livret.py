@@ -6,8 +6,8 @@ sur A4), dans la DA « Ciel d'été » du site : texte et titres noirs, titres e
 paille, étiquette du numéro bleu ciel, encadré du dé bleu nuit à ombre jaune, séparateurs avec les objets en
 voxel de Manon (diamant, flamme, œil, en alternance le long de la lecture).
 
-Particularité du Fermier (demande de Manon) : chaque chapitre s'ouvre sur son illustration A5 en pleine page, à
-fond perdu et sans texte ; le texte commence à la page suivante. Les illustrations sont mises au format de la
+Particularité du Fermier (demande de Manon) : chaque chapitre s'ouvre sur son image carrée, puis le numéro, le
+titre et le texte ; son illustration A5 suit le chapitre, en pleine page, à fond perdu et sans texte. Les illustrations sont mises au format de la
 page par source/preparer_illustrations_livret.py (images/livret/), sans recadrage.
 
 Ordre : couverture, résumé, histoire, arbre (deux pages), « Comment est née cette histoire », pages
@@ -82,18 +82,16 @@ p {{ margin: 0 0 0.55em; orphans: 2; widows: 2; }}
 /* Illustration en pleine page, à fond perdu (l'image est déjà au format de la page) */
 .pleine {{ page: plein; break-before: page; position: relative; height: 185.5mm; overflow: hidden; }}
 .pleine img {{ position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }}
-.pleine .marque {{ position: absolute; left: 2mm; top: 2mm; }}
 
 /* Couverture : l'image A5 de Manon en pleine page, le titre dans le ciel de nuit */
 .couverture {{ page: plein; position: relative; height: 185.5mm; overflow: hidden; }}
 .couverture img {{ position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }}
-.couverture .titre {{ position: absolute; left: 8mm; right: 8mm; top: 11mm; text-align: center; }}
-.couverture .surtitre {{ display: inline-block; background: rgba(255, 255, 255, 0.92); border-radius: 10mm;
-  padding: 1.1mm 3.6mm 0.9mm; font-size: 7.5pt; font-style: italic; color: {ENCRE}; }}
+.couverture .titre {{ position: absolute; left: 14mm; right: 14mm; top: 17mm; text-align: center; }}
+/* Le titre est posé sur une nébuleuse blanche peinte dans l'image (images/livret/couverture-nebuleuse.jpg) */
+.couverture .surtitre {{ font-size: 8.5pt; font-style: italic; color: {NUIT}; }}
 .couverture h1 {{ margin: 3mm 0 2mm; font-family: {TITRE_POLICE}; font-weight: 600; font-size: 25pt; line-height: 1.22; }}
-.couverture h1 span {{ background: {PAILLE}; color: {ENCRE}; padding: 0 1.5mm; box-decoration-break: clone;
-  -webkit-box-decoration-break: clone; }}
-.couverture .noms {{ font-style: italic; font-size: 13pt; color: #fff; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7); }}
+.couverture h1 span {{ {SURLIGNE} color: {ENCRE}; box-decoration-break: clone; -webkit-box-decoration-break: clone; }}
+.couverture .noms {{ font-style: italic; font-size: 12.5pt; color: {NUIT}; }}
 .couverture .mention {{ position: absolute; left: 10mm; right: 10mm; bottom: 4.5mm; text-align: center; font-size: 6.5pt;
   font-style: italic; color: #fff; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9); }}
 
@@ -105,6 +103,8 @@ p {{ margin: 0 0 0.55em; orphans: 2; widows: 2; }}
 .resume .texte {{ font-size: 12pt; line-height: 1.6; margin-top: 2mm; }}
 
 /* Chapitres */
+/* En tête de chaque chapitre, l'image carrée entière, un peu moins large que le texte */
+.carre {{ display: block; width: 66mm; height: 66mm; margin: 0 auto 4.5mm; border: 0.8mm solid {NUIT}; box-shadow: 1.3mm 1.3mm 0 {PAILLE}; }}
 .ouverture {{ margin: 0 0 4mm; }}
 .numero {{ display: inline-block; font-family: {TITRE_POLICE}; font-weight: 600; font-size: 10pt; color: #fff;
   background: {CIEL}; padding: 0.4mm 2.4mm 0.2mm; border-radius: 1mm; }}
@@ -119,6 +119,14 @@ h2 span {{ {SURLIGNE} box-decoration-break: clone; -webkit-box-decoration-break:
 .serre3 {{ line-height: 1.27; }}
 .serre3 p {{ margin-bottom: 0.25em; }}
 .serre3 .separateur {{ margin: 2.5mm 0 2mm; }}
+/* Dernier cran : espacements compactés autour du titre et du séparateur (le texte reste à 11 pt) */
+.serre4 {{ line-height: 1.24; }}
+.serre4 p {{ margin-bottom: 0.2em; }}
+.serre4 .carre {{ margin-bottom: 3mm; }}
+.serre4 .ouverture {{ margin-bottom: 2mm; }}
+.serre4 h2 {{ margin-top: 1mm; }}
+.serre4 .separateur {{ margin: 1.5mm 0 1mm; }}
+.serre4 .separateur img {{ width: 6mm; height: 6mm; }}
 .aere {{ line-height: 1.6; }}
 .aere p {{ margin-bottom: 0.8em; }}
 .aere2 {{ line-height: 1.7; }}
@@ -198,7 +206,7 @@ def separateur(objet):
             f'<span class="trait" style="background:{couleur}"></span></div>')
 
 
-VARIANTES = ["serre", "serre2", "serre3", "aere", "aere2"]
+VARIANTES = ["serre", "serre2", "serre3", "serre4", "aere", "aere2"]
 REGLAGES = {}                                   # chapitre -> indice dans VARIANTES
 
 
@@ -206,10 +214,13 @@ def chapitre(ch, pages):
     cle = cle_de(ch["nom"])
     corps, consigne, tirages, options, renvoi, fin = lire_choix(ch)
     image = RACINE / "images" / "livret" / f"{illustration(ch['nom'])}.jpg"
-    morceaux = [f'<section class="pleine"><span class="marque">@@CH{cle}@@</span><img src="{uri(image)}" alt=""></section>']
+    carre = RACINE / "images" / "chapitres" / f"{illustration(ch['nom'])}.jpg"
+    morceaux = []
     classe = "page-seule" + (f" {VARIANTES[REGLAGES[cle]]}" if cle in REGLAGES else "")
     numero = "Prologue" if cle == 0 else ch["numero"]
-    morceaux.append(f'<section class="{classe}"><div class="ouverture"><span class="numero">{e(numero)}</span>'
+    tete = f'<img class="carre" src="{uri(carre)}" alt="">' if carre.exists() else ""
+    morceaux.append(f'<section class="{classe}"><span class="marque">@@CH{cle}@@</span>{tete}'
+                    f'<div class="ouverture"><span class="numero">{e(numero)}</span>'
                     f'<h2><span>{e(ch["titre"])}</span></h2></div>')
     morceaux += [f"<p>{e(p)}</p>" for p in corps[:-1]]
     suite = [f"<p>{e(corps[-1])}</p>", separateur(objet_du_chapitre(cle))]
@@ -229,6 +240,8 @@ def chapitre(ch, pages):
         suite = [f"<p>{e(corps[-1])}</p>", separateur(objet_du_chapitre(cle)), '<p class="fin"><span>Fin</span></p>']
     morceaux.append('<div class="suite">' + "".join(suite) + "</div>")
     morceaux.append("</section>")
+    # L'illustration A5 en pleine page, à fond perdu et sans texte, après le chapitre
+    morceaux.append(f'<section class="pleine"><img src="{uri(image)}" alt=""></section>')
     return "".join(morceaux)
 
 
@@ -241,6 +254,8 @@ def arbre():
     pages = []
     for debut, fin, titre in ((0, coupe, "L’arbre de l’histoire"), (coupe, hauteur, "")):
         tete = f'<h3><span>{titre}</span></h3>' if titre else ""
+        if titre:                                  # repère de fin du dernier chapitre (contrôle de sa dernière page)
+            tete = '<span class="marque">@@CH99@@</span>' + tete
         pages.append(f'<section class="arbre">{tete}<div class="fenetre" style="height:{(fin - debut) * echelle:.1f}mm">'
                      f'<img src="{uri(svg)}" style="top:-{debut * echelle:.1f}mm" alt=""></div></section>')
     return "".join(pages)
@@ -254,7 +269,7 @@ def qr_code():
 
 def document(pages, complements=0):
     couverture = (
-        f'<section class="couverture"><img src="{uri(RACINE / "images" / "livret" / "couverture.jpg")}" alt="">'
+        f'<section class="couverture"><img src="{uri(RACINE / "images" / "livret" / "couverture-nebuleuse.jpg")}" alt="">'
         '<div class="titre"><span class="surtitre">Une histoire dont le lecteur est le héros</span>'
         f'<h1><span>{e(TITRE)}</span></h1><div class="noms">{e(AUTEURS)}</div></div>'
         f'<div class="mention">{e(AVERTISSEMENT_COURT)}</div></section>'
@@ -316,16 +331,16 @@ SEUIL_QUEUE = 8
 
 
 def queues_courtes(pdf, pages):
-    """Chapitres dont la dernière page de texte ne porte que quelques lignes (la page de l'illustration ne compte
-    pas ; un chapitre qui tient sur une seule page de texte n'est pas concerné)."""
+    """Chapitres dont la dernière page de texte ne porte que quelques lignes (un chapitre qui tient sur une seule
+    page de texte n'est pas concerné ; l'illustration A5 qui ferme le chapitre ne compte pas)."""
     debuts = sorted((p, cle) for cle, p in pages.items())
     total = len(PdfReader(str(pdf)).pages)
     courtes = set()
     for (debut, cle), (suivant, _) in zip(debuts, debuts[1:] + [(None, None)]):
         if suivant is None:
             continue
-        fin = suivant - 1
-        if fin <= debut + 1:
+        fin = suivant - 2                          # suivant - 1 : l'illustration A5 qui ferme le chapitre
+        if fin <= debut:
             continue
         lignes = [l for l in texte_page(pdf, fin).splitlines() if l.strip() and not l.strip().isdigit()]
         if len(lignes) <= SEUIL_QUEUE:
@@ -386,6 +401,7 @@ def traits_de_coupe(dossier):
 
 
 def imposer(lecture, traits, sortie, bord_long):
+    from pypdf.generic import ArrayObject, DecodedStreamObject, DictionaryObject, FloatObject, NameObject
     pages = PdfReader(str(lecture)).pages
     n = len(pages)
     assert n % 4 == 0
@@ -396,8 +412,30 @@ def imposer(lecture, traits, sortie, bord_long):
     def face(gauche, droite, retournee):
         feuille = PageObject.create_blank_page(width=A4_L, height=A4_H)
         feuille.merge_page(traits)
+        # Chaque page est posée comme un objet « forme » : ses dégradés et motifs suivent la page (posée
+        # directement, un dégradé resterait calé sur la feuille et se décalerait)
+        objets, dessin = DictionaryObject(), ""
         for indice, x in ((gauche, x0), (droite, x0 + LARGEUR_PAGE * MM)):
-            feuille.merge_transformed_page(pages[indice - 1], Transformation().translate(x, y0))
+            page = pages[indice - 1]
+            forme = DecodedStreamObject()
+            forme.set_data(page.get_contents().get_data())
+            forme[NameObject("/Type")] = NameObject("/XObject")
+            forme[NameObject("/Subtype")] = NameObject("/Form")
+            forme[NameObject("/BBox")] = ArrayObject([FloatObject(v) for v in page.mediabox])
+            forme[NameObject("/Resources")] = page["/Resources"].clone(ecrivain)
+            objets[NameObject(f"/Page{indice}")] = ecrivain._add_object(forme)
+            dessin += f"q 1 0 0 1 {x:.3f} {y0:.3f} cm /Page{indice} Do Q\n"
+        if "/Resources" not in feuille:
+            feuille[NameObject("/Resources")] = DictionaryObject()
+        ressources = feuille["/Resources"]
+        if "/XObject" in ressources:
+            ressources["/XObject"].update(objets)
+        else:
+            ressources[NameObject("/XObject")] = objets
+        # Les traits de coupe d'abord (repris de leur propre page), puis les pages
+        tout = DecodedStreamObject()
+        tout.set_data(b"q\n" + traits.get_contents().get_data() + b"\nQ\n" + dessin.encode())
+        feuille.replace_contents(tout)
         if retournee:
             feuille.rotate(180)
         ecrivain.add_page(feuille)
