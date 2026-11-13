@@ -62,10 +62,14 @@ TITRE_POLICE = '"Chiffres", "Pixelify Sans", monospace'
 SURLIGNE = (f"text-decoration: underline {PAILLE}; text-decoration-thickness: 0.3em; text-underline-offset: -0.12em; "
             "text-decoration-skip-ink: none;")
 
-CSS = "\n".join([police("Pixelify Sans", "PixelifySans.woff2"),
-                 police("Chiffres", "ChiffresBricolage.woff2", plage=" unicode-range: U+30-39;"),
-                 police("Source Serif 4", "SourceSerif4.woff2"),
-                 police("Source Serif 4", "SourceSerif4-italique.woff2", italique=True)]) + f"""
+# Polices FIXES (une graisse par fichier, fonts/fixes/) : avec les polices variables du site, Chrome intègre au
+# PDF des polices « Type 3 » que beaucoup de visionneuses affichent mal.
+CSS = "\n".join([police("Pixelify Sans", "fixes/PixelifySans-600.ttf", "400 700"),
+                 police("Chiffres", "fixes/ChiffresBricolage.ttf", "400 800", plage=" unicode-range: U+30-39;"),
+                 police("Source Serif 4", "fixes/SourceSerif4-400.ttf", "400"),
+                 police("Source Serif 4", "fixes/SourceSerif4-600.ttf", "500 600"),
+                 police("Source Serif 4", "fixes/SourceSerif4-700.ttf", "700 900"),
+                 police("Source Serif 4", "fixes/SourceSerif4-Italic-400.ttf", "400 700", italique=True)]) + f"""
 @page {{
   size: {LARGEUR_PAGE}mm {HAUTEUR_PAGE}mm;
   margin: 13mm 12mm 16mm 12mm;
@@ -89,13 +93,13 @@ p {{ margin: 0 0 0.55em; orphans: 2; widows: 2; }}
 /* Couverture : l'image A5 de Manon en pleine page, le titre dans le ciel de nuit */
 .couverture {{ page: plein; position: relative; height: 185.5mm; overflow: hidden; }}
 .couverture img {{ position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }}
-.couverture .titre {{ position: absolute; left: 14mm; right: 14mm; top: 17mm; text-align: center; }}
-/* Titre sur l'image, chaque ligne sur un surlignage blanc en aplat (Manon : pas de halo) */
-.couverture .surtitre, .couverture .noms {{ display: inline; background: #fff; padding: 0.4mm 2mm; box-decoration-break: clone; -webkit-box-decoration-break: clone; }}
-.couverture .surtitre {{ font-size: 8.5pt; font-style: italic; color: {NUIT}; }}
-.couverture h1 {{ margin: 3mm 0 2mm; font-family: {TITRE_POLICE}; font-weight: 600; font-size: 25pt; line-height: 1.22; }}
-.couverture h1 span {{ background: #fff; color: {ENCRE}; padding: 0 2.2mm; box-decoration-break: clone; -webkit-box-decoration-break: clone; }}
-.couverture .noms {{ font-style: italic; font-size: 12.5pt; color: {NUIT}; }}
+/* Titre dans une carte bleu nuit transparente cerclée de blanc, ombre jaune paille (essai D3 choisi par Manon) */
+.couverture .titre {{ position: absolute; left: 11mm; right: 11mm; top: 15mm; text-align: center; color: #fff;
+  background: rgba(20, 80, 127, 0.55); border: 0.8mm solid #fff; box-shadow: 1.6mm 1.6mm 0 {PAILLE}; padding: 4.5mm 3mm 4mm; }}
+.couverture .surtitre {{ display: block; font-size: 8.5pt; font-style: italic; }}
+.couverture h1 {{ margin: 2.5mm 0 2mm; font-family: {TITRE_POLICE}; font-weight: 600; font-size: 22pt; line-height: 1.25; }}
+.couverture h1 span {{ text-decoration: underline {PAILLE}; text-decoration-thickness: 0.18em; text-underline-offset: 0.06em; }}
+.couverture .noms {{ font-style: italic; font-size: 12.5pt; }}
 .couverture .mention {{ position: absolute; left: 10mm; right: 10mm; bottom: 4.5mm; text-align: center; font-size: 6.5pt;
   font-style: italic; color: #fff; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9); }}
 

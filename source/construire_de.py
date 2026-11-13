@@ -125,7 +125,7 @@ def construire():
 html {{ font-family: "Source Serif 4", serif; font-size: 11pt; line-height: 1.45; color: {NUIT}; }}
 body {{ margin: 0; text-align: center; }}
 h1 {{ font-family: {TITRE_POLICE}; font-weight: 600; font-size: 22pt; color: {NUIT}; margin: 0; }}
-h1 span {{ background: linear-gradient(transparent 62%, #f7c531 62% 92%, transparent 92%); }}
+h1 span {{ text-decoration: underline #f7c531; text-decoration-thickness: 0.3em; text-underline-offset: -0.12em; text-decoration-skip-ink: none; }}
 .consigne {{ margin: 0 auto 3mm; max-width: 112mm; }}
 .separateur {{ display: flex; align-items: center; justify-content: center; gap: 2.5mm; margin: 2.5mm 0 3mm; }}
 .separateur .trait {{ width: 14mm; height: 0.6mm; }}
