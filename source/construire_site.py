@@ -56,6 +56,9 @@ CONTEXTE = [
 
 CSS = """
 @font-face { font-family: "Pixelify Sans"; font-style: normal; font-weight: 400 700; font-display: swap; src: url("fonts/PixelifySans.woff2") format("woff2"); }
+/* Les chiffres de Pixelify Sans se confondent avec des lettres (le 5 ressemble à un S) : les chiffres seuls
+   viennent de Silkscreen, une autre police pixel, plus lisible */
+@font-face { font-family: "Chiffres pixel"; font-weight: 400 700; font-display: swap; src: url("fonts/ChiffresPixel.woff2") format("woff2"); unicode-range: U+30-39; }
 @font-face { font-family: "Source Serif 4"; font-style: normal; font-weight: 400 700; font-display: swap; src: url("fonts/SourceSerif4.woff2") format("woff2"); }
 @font-face { font-family: "Source Serif 4"; font-style: italic; font-weight: 400 700; font-display: swap; src: url("fonts/SourceSerif4-italique.woff2") format("woff2"); }
 
@@ -89,12 +92,12 @@ tw-passage { max-width: 1120px; margin: 0 auto; }
 .page.sans-image { grid-template-columns: minmax(0, 1fr); max-width: 680px; margin: 0 auto; }
 /* L'image reste exactement là où elle apparaît (bandeau 14 px + marge haute de la page) : en lisant, elle ne
    remonte pas dans la marge, elle accompagne le texte */
-.cote { position: sticky; top: calc(14px + 3 * 1.08rem); }
+.cote { position: sticky; top: calc(14px + 3 * 1.08rem + 49px); }  /* 49 px : la ligne « ← Couverture » au-dessus */
 .cote img { display: block; width: 100%; height: auto; border-radius: 8px; box-shadow: 0 14px 30px -14px rgba(20, 80, 127, 0.55); }
 
 .chapitre { font-size: 1rem; margin: 0 0 1.1em; font-weight: 400; line-height: 1.05; }
-.chapitre .numero { display: inline-block; font-family: "Pixelify Sans", monospace; font-weight: 600; font-size: 1.05rem; color: #fff; background: var(--ciel); padding: 0.1em 0.6em; border-radius: 3px; margin-bottom: 0.45em; }
-.chapitre .titre { display: block; font-family: "Pixelify Sans", monospace; font-weight: 600; font-size: clamp(1.6rem, 3.2vw, 2.15rem); color: var(--encre); }
+.chapitre .numero { display: inline-block; font-family: "Chiffres pixel", "Pixelify Sans", monospace; font-weight: 600; font-size: 1.05rem; color: #fff; background: var(--ciel); padding: 0.1em 0.6em; border-radius: 3px; margin-bottom: 0.45em; }
+.chapitre .titre { display: block; font-family: "Chiffres pixel", "Pixelify Sans", monospace; font-weight: 600; font-size: clamp(1.6rem, 3.2vw, 2.15rem); color: var(--encre); }
 .chapitre .titre span { background: linear-gradient(transparent 62%, var(--paille) 62% 92%, transparent 92%); box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 .texte p, .texte { font-size: 1.04rem; }
 
@@ -110,7 +113,7 @@ tw-passage { max-width: 1120px; margin: 0 auto; }
    flèche en pixels bleu ciel ; il se souligne au survol */
 .elan { display: flex; justify-content: center; margin-top: 0.4em; }
 .elan tw-link, .elan .enchantment-link {
-  display: inline-flex; align-items: center; gap: 0.55em; font-family: "Pixelify Sans", monospace; font-weight: 600;
+  display: inline-flex; align-items: center; gap: 0.55em; font-family: "Chiffres pixel", "Pixelify Sans", monospace; font-weight: 600;
   font-size: 1.2rem; color: var(--nuit); text-decoration: none;
 }
 .elan tw-link::after, .elan .enchantment-link::after { content: ""; width: 22px; height: 22px; flex: none; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' shape-rendering='crispEdges'%3E%3Crect x='0' y='3' width='5' height='2' fill='%233aa0e8'/%3E%3Crect x='4' y='1' width='1' height='6' fill='%233aa0e8'/%3E%3Crect x='5' y='2' width='1' height='4' fill='%233aa0e8'/%3E%3Crect x='6' y='3' width='1' height='2' fill='%233aa0e8'/%3E%3C/svg%3E") center / contain no-repeat; }
@@ -133,26 +136,27 @@ tw-link:hover, .enchantment-link:hover { color: var(--nuit); text-decoration: un
 .chapeau:hover { transform: translateY(-2px) rotate(-3deg); }
 .chapeau.roule { animation: secoue 0.6s ease; }
 @keyframes secoue { 20% { transform: rotate(-12deg); } 40% { transform: rotate(10deg); } 60% { transform: rotate(-6deg); } 80% { transform: rotate(4deg); } }
+/* Le nombre tiré s'affiche sous le chapeau, centré, dans la police des titres et surligné de jaune paille */
 .chapeau .face {
-  position: absolute; right: -12px; bottom: -14px; min-width: 42px; height: 42px; display: none;
-  align-items: center; justify-content: center; font-family: "Source Serif 4", Georgia, serif; font-weight: 700;
-  font-size: 28px; color: #fff; background: var(--nuit); border: 3px solid #fff;
+  position: absolute; left: 50%; top: 100%; transform: translateX(-50%); margin-top: 0.15em; display: none;
+  font-family: "Chiffres pixel", "Pixelify Sans", monospace; font-weight: 700; font-size: 46px; line-height: 1.1; color: var(--encre);
+  background: linear-gradient(transparent 62%, var(--paille) 62% 92%, transparent 92%); padding: 0 0.15em;
 }
-.chapeau.montre .face { display: flex; }
-.consigne b { display: block; font-family: "Pixelify Sans", monospace; font-weight: 600; font-size: 1.2rem; color: var(--encre); line-height: 1.15; }
+.chapeau.montre .face { display: block; }
+.consigne b { display: block; font-family: "Chiffres pixel", "Pixelify Sans", monospace; font-weight: 600; font-size: 1.2rem; color: var(--encre); line-height: 1.15; }
 .consigne span { display: block; font-size: 0.98rem; }
 .resultat:empty { display: none; }
 .resultat { display: block; font-style: italic; font-size: 0.95rem; color: var(--nuit); margin-top: 0.6em; }
 .tirages { margin-top: 0.3em; }
 .tirage { display: flex; align-items: baseline; gap: 0.7em; margin: 0.35em 0; }
-.tirage b { font-family: "Pixelify Sans", monospace; font-weight: 600; font-size: 0.95rem; color: #fff; background: var(--nuit); padding: 0.05em 0.5em; min-width: 4.2em; text-align: center; }
+.tirage b { font-family: "Chiffres pixel", "Pixelify Sans", monospace; font-weight: 600; font-size: 0.95rem; color: #fff; background: var(--nuit); padding: 0.05em 0.5em; min-width: 4.2em; text-align: center; }
 /* Choix du lecteur (sans dé) : le même encadré, sans le chapeau */
 .choix-lecteur .consigne b { margin-bottom: 0.4em; }
 .choix-lecteur .option { display: block; margin: 0.45em 0; }
 
 .mention { display: block; margin-top: 2.6em; font-size: 0.85rem; font-style: italic; color: #5c6670; }
 .fin { text-align: center; margin-top: 1.4em; }
-.mot-fin { display: block; font-family: "Pixelify Sans", monospace; font-weight: 700; font-size: 2.4rem; color: var(--encre); }
+.mot-fin { display: block; font-family: "Chiffres pixel", "Pixelify Sans", monospace; font-weight: 700; font-size: 2.4rem; color: var(--encre); }
 .secondaires { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.4em 1.4em; margin-top: 0.8em; font-size: 0.98rem; }
 
 /* Page de garde : l'image à gauche, le titre à droite, le tout tient dans l'écran */
@@ -162,7 +166,7 @@ tw-link:hover, .enchantment-link:hover { color: var(--nuit); text-decoration: un
   box-shadow: 0 18px 36px -16px rgba(20, 80, 127, 0.6); }
 .garde-texte { max-width: 30em; }
 .surtitre { display: block; font-style: italic; font-size: 1.05rem; color: #5c6670; }
-.garde-titre { font-family: "Pixelify Sans", monospace; font-weight: 600; font-size: clamp(2.2rem, 4.4vw, 3.5rem); line-height: 1.12; margin: 0.25em 0 0.35em; }
+.garde-titre { font-family: "Chiffres pixel", "Pixelify Sans", monospace; font-weight: 600; font-size: clamp(2.2rem, 4.4vw, 3.5rem); line-height: 1.12; margin: 0.25em 0 0.35em; }
 .garde-titre span { background: linear-gradient(transparent 62%, var(--paille) 62% 92%, transparent 92%); box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 .noms { display: block; font-size: 1.25rem; }
 .commencer { justify-content: flex-start; margin-top: 1.6em; }
@@ -173,11 +177,17 @@ tw-link:hover, .enchantment-link:hover { color: var(--nuit); text-decoration: un
   .garde-image { width: 100%; max-width: 480px; }
 }
 
+/* Liens secondaires de la page de garde et lien de retour à la couverture en haut des chapitres */
+.garde .secondaires { justify-content: flex-start; margin-top: 1.1em; }
+.retour { max-width: 1120px; margin: 0 auto 1.2em; line-height: 1.6; }
+.retour tw-link, .retour .enchantment-link { font-size: 0.95rem; }
+.retour tw-link::before, .retour .enchantment-link::before { content: "← "; }
+
 /* Pages annexes */
 .lien-retour { display: block; margin-bottom: 1.4em; font-size: 0.95rem; }
 .lien-retour tw-link::before { content: "← "; }
 .contexte { max-width: 680px; margin: 0 auto; }
-.contexte h1, .arbre h1 { font-family: "Pixelify Sans", monospace; font-weight: 600; font-size: clamp(1.6rem, 3.2vw, 2.1rem); color: var(--encre); margin: 0 0 0.6em; line-height: 1.1; }
+.contexte h1, .arbre h1 { font-family: "Chiffres pixel", "Pixelify Sans", monospace; font-weight: 600; font-size: clamp(1.6rem, 3.2vw, 2.1rem); color: var(--encre); margin: 0 0 0.6em; line-height: 1.1; }
 .credits { display: block; margin-top: 1.6em; font-size: 0.9rem; font-style: italic; white-space: pre-line; }
 .arbre { text-align: center; }
 .arbre img { display: block; width: 100%; max-width: 900px; margin: 1em auto 0; }
@@ -185,7 +195,7 @@ tw-link:hover, .enchantment-link:hover { color: var(--nuit); text-decoration: un
 @media (max-width: 820px) {
   tw-story { padding: 1.4em 1em 3em; }
   .page { grid-template-columns: minmax(0, 1fr); gap: 1.2em; }
-  .cote { position: relative; }
+  .cote { position: relative; top: auto; }
 }
 """
 
@@ -386,6 +396,8 @@ def passage_garde(mention):
             '<div class="garde-texte"><span class="surtitre">Une histoire dont le lecteur est le héros</span>'
             f'<h1 class="garde-titre"><span>{TITRE}</span></h1><span class="noms">{AUTEURS}</span>'
             f'<div class="elan commencer">{lien("Commencer l’aventure", "Prologue")}</div>'
+            f'<div class="secondaires">{lien("Comment est née cette histoire", "Comment est née cette histoire")}'
+            f'{lien("L’arbre de l’histoire", "L’arbre de l’histoire")}</div>'
             f'<span class="mention">{mention}</span></div></div>')
 
 
@@ -421,7 +433,13 @@ def construire():
     moteur = re.sub(r"JavaScript doit être activé pour lire [^.<]*\.", f"JavaScript doit être activé pour lire {TITRE}.", moteur)
 
     mention = e(lire_mention())
-    passages = [("Couverture", "", passage_garde(mention))]
+    passages = [
+        # En haut de chaque chapitre, un petit lien pour revenir à la couverture (comme sur les autres livres)
+        ("Bouton couverture", "header",
+         '(unless: (a: "Couverture", "L’arbre de l’histoire", "Comment est née cette histoire") contains (passage:)\'s name)'
+         '[<div class="retour">[[Couverture->Couverture]]</div>]'),
+        ("Couverture", "", passage_garde(mention)),
+    ]
     for ch in lire_chapitres():
         passages.append((ch["nom"], "", passage_chapitre(ch, mention)))
     passages.append(("Comment est née cette histoire", "", passage_contexte(mention)))
