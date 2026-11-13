@@ -57,7 +57,10 @@ def police(nom, fichier, poids="400 800", italique=False, plage=""):
 
 
 TITRE_POLICE = '"Chiffres", "Pixelify Sans", monospace'
-SURLIGNE = f"background: linear-gradient(transparent 62%, {PAILLE} 62% 92%, transparent 92%);"
+# Surlignage jaune en couleur pleine : un soulignement épais passé sous le bas des lettres. Pas de dégradé :
+# certaines visionneuses de PDF le rendent en noir.
+SURLIGNE = (f"text-decoration: underline {PAILLE}; text-decoration-thickness: 0.3em; text-underline-offset: -0.12em; "
+            "text-decoration-skip-ink: none;")
 
 CSS = "\n".join([police("Pixelify Sans", "PixelifySans.woff2"),
                  police("Chiffres", "ChiffresBricolage.woff2", plage=" unicode-range: U+30-39;"),
@@ -87,10 +90,11 @@ p {{ margin: 0 0 0.55em; orphans: 2; widows: 2; }}
 .couverture {{ page: plein; position: relative; height: 185.5mm; overflow: hidden; }}
 .couverture img {{ position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }}
 .couverture .titre {{ position: absolute; left: 14mm; right: 14mm; top: 17mm; text-align: center; }}
-/* Le titre est posé sur une nébuleuse blanche peinte dans l'image (images/livret/couverture-nebuleuse.jpg) */
+/* Titre sur l'image, chaque ligne sur un surlignage blanc en aplat (Manon : pas de halo) */
+.couverture .surtitre, .couverture .noms {{ display: inline; background: #fff; padding: 0.4mm 2mm; box-decoration-break: clone; -webkit-box-decoration-break: clone; }}
 .couverture .surtitre {{ font-size: 8.5pt; font-style: italic; color: {NUIT}; }}
 .couverture h1 {{ margin: 3mm 0 2mm; font-family: {TITRE_POLICE}; font-weight: 600; font-size: 25pt; line-height: 1.22; }}
-.couverture h1 span {{ {SURLIGNE} color: {ENCRE}; box-decoration-break: clone; -webkit-box-decoration-break: clone; }}
+.couverture h1 span {{ background: #fff; color: {ENCRE}; padding: 0 2.2mm; box-decoration-break: clone; -webkit-box-decoration-break: clone; }}
 .couverture .noms {{ font-style: italic; font-size: 12.5pt; color: {NUIT}; }}
 .couverture .mention {{ position: absolute; left: 10mm; right: 10mm; bottom: 4.5mm; text-align: center; font-size: 6.5pt;
   font-style: italic; color: #fff; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9); }}
@@ -105,7 +109,7 @@ p {{ margin: 0 0 0.55em; orphans: 2; widows: 2; }}
 /* Chapitres */
 /* En tête de chaque chapitre, l'image carrée entière, un peu moins large que le texte */
 .carre {{ display: block; width: 66mm; height: 66mm; margin: 0 auto 4.5mm; border: 0.8mm solid {NUIT}; box-shadow: 1.3mm 1.3mm 0 {PAILLE}; }}
-.ouverture {{ margin: 0 0 4mm; }}
+.ouverture {{ margin: 0 0 4mm; text-align: center; }}
 .numero {{ display: inline-block; font-family: {TITRE_POLICE}; font-weight: 600; font-size: 10pt; color: #fff;
   background: {CIEL}; padding: 0.4mm 2.4mm 0.2mm; border-radius: 1mm; }}
 h2 {{ font-family: {TITRE_POLICE}; font-weight: 600; font-size: 18pt; line-height: 1.2; margin: 2mm 0 0; }}
@@ -165,9 +169,11 @@ h2 span {{ {SURLIGNE} box-decoration-break: clone; -webkit-box-decoration-break:
 .contexte h3 {{ font-family: {TITRE_POLICE}; font-weight: 600; font-size: 15pt; line-height: 1.25; margin: 2mm 0 1mm; }}
 .contexte h3 span {{ {SURLIGNE} }}
 .contexte p {{ font-size: 11pt; }}
-.portraits {{ display: flex; justify-content: center; align-items: flex-end; gap: 8mm; }}
-.portraits img {{ height: 24mm; width: auto; }}
-.portraits img.petit {{ height: 13mm; }}
+.portraits {{ display: flex; justify-content: center; align-items: flex-end; gap: 7mm; margin-bottom: 4mm; }}
+/* Chaque dessin sur une carte bleu clair encadrée de bleu nuit, ombre jaune, pour qu'il ressorte */
+.portraits span {{ display: block; background: #eef8ff; border: 0.8mm solid #14507f; box-shadow: 1.3mm 1.3mm 0 #f7c531; padding: 2.5mm 3mm; }}
+.portraits img {{ display: block; height: 30mm; width: auto; }}
+.portraits img.petit {{ height: 16mm; }}
 .citation {{ font-family: {TITRE_POLICE}; font-weight: 600; font-size: 12pt; line-height: 1.35; color: {NUIT}; margin: 3mm 4mm; }}
 .citation span {{ display: block; font-family: "Source Serif 4"; font-weight: 400; font-style: italic; font-size: 9pt; color: {GRIS}; margin-top: 1mm; }}
 
@@ -269,7 +275,7 @@ def qr_code():
 
 def document(pages, complements=0):
     couverture = (
-        f'<section class="couverture"><img src="{uri(RACINE / "images" / "livret" / "couverture-nebuleuse.jpg")}" alt="">'
+        f'<section class="couverture"><img src="{uri(RACINE / "images" / "livret" / "couverture.jpg")}" alt="">'
         '<div class="titre"><span class="surtitre">Une histoire dont le lecteur est le héros</span>'
         f'<h1><span>{e(TITRE)}</span></h1><div class="noms">{e(AUTEURS)}</div></div>'
         f'<div class="mention">{e(AVERTISSEMENT_COURT)}</div></section>'
@@ -282,7 +288,7 @@ def document(pages, complements=0):
     dessins = RACINE / "images" / "dessins"
     contexte = (
         '<section class="page-seule contexte"><div class="portraits">'
-        f'<img src="{uri(dessins / "kevine.png")}" alt=""><img class="petit" src="{uri(dessins / "gertrude.png")}" alt=""></div>'
+        f'<span><img src="{uri(dessins / "kevine.png")}" alt=""></span><span><img class="petit" src="{uri(dessins / "gertrude.png")}" alt=""></span></div>'
         f'<h3><span>Comment est née cette histoire</span></h3>{separateur("flamme")}'
         + "".join(paragraphes[:4])
         + f'<div class="citation">« {e(CITATION)} »<span>Antoine et Émile, sur leur fiche récit</span></div>'
