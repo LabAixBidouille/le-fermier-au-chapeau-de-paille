@@ -53,7 +53,10 @@ def image_integree(chemin, cote, carre=True):
         im.thumbnail((cote, cote), Image.LANCZOS)
         im.save(tampon, "PNG", optimize=True)
         return "data:image/png;base64," + base64.b64encode(tampon.getvalue()).decode()
-    im = im.convert("RGB").resize((cote, cote), Image.LANCZOS)
+    im = im.convert("RGB")
+    c = min(im.size)                                  # carré pris au centre, sans déformer
+    im = im.crop(((im.width - c) // 2, (im.height - c) // 2, (im.width + c) // 2, (im.height + c) // 2))
+    im = im.resize((cote, cote), Image.LANCZOS)
     im.save(tampon, "JPEG", quality=82)
     return "data:image/jpeg;base64," + base64.b64encode(tampon.getvalue()).decode()
 
@@ -115,15 +118,14 @@ def construire():
     for n, (x, y) in pos.items():
         x0 = x - L_CASE / 2
         fin = n == max(titres)
-        image = RACINE / "images" / ("couverture.jpg" if n == 0 else f"chapitres/chapitre-{n:02d}.jpg")
+        image = RACINE / "images" / ("grandes/prologue.jpg" if n == 0 else f"chapitres/chapitre-{n:02d}.jpg")
         numero = "Prologue" if n == 0 else f"Chapitre {n}"
         texte = lignes_titre(titres[n])
         y_titre = y + 60 - (len(texte) - 1) * 9
         l_num = 22 + len(numero) * 8.4
         cases.append(
             f'<g><rect x="{x0 + 2:.0f}" y="{y + 4}" width="{L_CASE}" height="{H_CASE}" rx="8" fill="{PAILLE if fin else "#cfe6f8"}"/>'
-            f'<rect x="{x0:.0f}" y="{y}" width="{L_CASE}" height="{H_CASE}" rx="8" fill="#fff" stroke="{PAILLE if fin else NUIT}" '
-            f'stroke-width="{4 if fin else 2.5}"/>'
+            f'<rect x="{x0:.0f}" y="{y}" width="{L_CASE}" height="{H_CASE}" rx="8" fill="#fff"/>'
             f'<clipPath id="v{n}"><rect x="{x0:.0f}" y="{y}" width="{VIGNETTE}" height="{H_CASE}" rx="8"/></clipPath>'
             f'<image x="{x0:.0f}" y="{y}" width="{VIGNETTE}" height="{H_CASE}" preserveAspectRatio="xMidYMid slice" '
             f'clip-path="url(#v{n})" href="{image_integree(image, 160)}"/>'
@@ -132,7 +134,9 @@ def construire():
             f'font-weight="600" font-size="14" fill="#fff">{numero}</text>'
             + "".join(f'<text x="{x0 + VIGNETTE + 12:.0f}" y="{y_titre + i * 18:.0f}" font-family="Source Serif 4" '
                       f'font-weight="600" font-size="15.5" fill="{ENCRE}">{html.escape(l)}</text>' for i, l in enumerate(texte))
-            + "</g>")
+            # Le cadre est tracé en dernier, par-dessus la vignette : il fait le tour de la carte sans interruption
+            + f'<rect x="{x0:.0f}" y="{y}" width="{L_CASE}" height="{H_CASE}" rx="8" fill="none" stroke="{PAILLE if fin else NUIT}" '
+              f'stroke-width="{4 if fin else 2.5}"/></g>')
 
     svg = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {LARGEUR} {hauteur:.0f}" width="{LARGEUR}" '
            f'height="{hauteur:.0f}"><style>{police("PixelifySans.woff2", "Pixelify Sans")}'

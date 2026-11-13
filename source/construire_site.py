@@ -129,6 +129,8 @@ tw-passage { max-width: 1120px; margin: 0 auto; }
 .elan tw-link::after, .elan .enchantment-link::after { content: ""; width: 22px; height: 22px; flex: none; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' shape-rendering='crispEdges'%3E%3Crect x='0' y='3' width='5' height='2' fill='%233aa0e8'/%3E%3Crect x='4' y='1' width='1' height='6' fill='%233aa0e8'/%3E%3Crect x='5' y='2' width='1' height='4' fill='%233aa0e8'/%3E%3Crect x='6' y='3' width='1' height='2' fill='%233aa0e8'/%3E%3C/svg%3E") center / contain no-repeat; }
 .elan tw-link:hover, .elan .enchantment-link:hover { text-decoration: underline; text-underline-offset: 0.25em; }
 tw-link, .enchantment-link { color: var(--nuit); font-weight: 600; text-decoration: none; }
+/* Harlowe colore en violet les liens déjà visités : ici, ils passent en vert (demande de Manon) */
+tw-link.visited, .enchantment-link.visited, tw-link.visited:hover { color: #2e8b3e; }
 tw-link:hover, .enchantment-link:hover { color: var(--nuit); text-decoration: underline; text-underline-offset: 0.2em; }
 
 /* Encadré du dé : bordure bleu nuit et ombre pleine jaune paille ; à gauche, le chapeau de paille détouré
