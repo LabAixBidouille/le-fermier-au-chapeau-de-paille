@@ -58,7 +58,7 @@ CONTEXTE = [
     "prolongé et mis en forme leur récit à l’aide d’outils numériques (l’intelligence "
     "artificielle a notamment permis d’aboutir à une histoire achevée et à un ensemble de visuels "
     "correspondant à leurs descriptions mais uniformes tout au long de la lecture).\n\n<b>À son "
-    "origine, il y a avant tout les idées et les personnages d’Antoine et d’Émile.</b>",
+    "origine, il y a avant tout les idées, les personnages et les dessins d’Antoine et d’Émile.</b>",
 ]
 
 CSS = """
@@ -95,13 +95,18 @@ tw-sidebar { display: none; }
 tw-passage { max-width: 1120px; margin: 0 auto; }
 
 /* Pages de lecture : l'illustration à gauche (elle suit la lecture au défilement), le texte à droite */
-.page { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 2.4em; align-items: start; }
+/* Pages de lecture : la grande image à gauche, collée au bord de la fenêtre et sur toute sa hauteur, sans marge ;
+   le texte à droite, avec le lien « ← Couverture » en tête */
+tw-story:has(.page) { padding: 0; }
+tw-passage:has(.page) { max-width: none; }
+.page { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: clamp(1.5em, 4vw, 3.5em); align-items: start; }
+.page .texte { max-width: 760px; padding: 2em clamp(1em, 3vw, 2.5em) 4em 0; }
 .page.sans-image { grid-template-columns: minmax(0, 1fr); max-width: 680px; margin: 0 auto; }
 /* L'image reste exactement là où elle apparaît (bandeau 14 px + marge haute de la page) : en lisant, elle ne
    remonte pas dans la marge, elle accompagne le texte */
-.cote { position: sticky; top: calc(14px + 3 * 1.08rem + 49px); }  /* 49 px : la ligne « ← Couverture » au-dessus */
+.cote { position: sticky; top: 0; }
 /* La grande image (A5, en hauteur) tient toujours dans la fenêtre */
-.cote img { display: block; width: auto; max-width: 100%; height: auto; max-height: calc(100vh - 14px - 3 * 1.08rem - 49px - 1.5em); margin: 0 auto; border-radius: 8px; box-shadow: 0 14px 30px -14px rgba(20, 80, 127, 0.55); }
+.cote img { display: block; height: min(100vh, calc(52vw * 1.42)); width: auto; }
 
 .chapitre { font-size: 1rem; margin: 0 0 1.1em; font-weight: 400; line-height: 1.05; display: flex; align-items: center; gap: 1em; }
 .chapitre .entete { display: block; min-width: 0; }
@@ -114,9 +119,9 @@ tw-passage { max-width: 1120px; margin: 0 auto; }
 .separateur { display: flex; align-items: center; justify-content: center; gap: 0.8em; margin: 1.6em 0 1.4em; }
 .separateur .trait { width: 3.2em; height: 3px; background: var(--ciel); }
 /* Les traits prennent la couleur de l'objet */
-.separateur-diamant .trait { background: #2f9bea; }
-.separateur-flamme .trait { background: #f2741c; }
-.separateur-oeil .trait { background: #3fae4a; }
+.separateur-diamant .trait { background: #3cc8d8; }
+.separateur-flamme .trait { background: #f07a1a; }
+.separateur-oeil .trait { background: #1f9a5c; }
 .separateur .objet { width: 40px; height: 40px; object-fit: contain; display: block; }
 
 /* Renvoi simple (choix A de Manon) : un lien en police pixel bleu nuit, centré sous le séparateur, suivi d'une petite
@@ -131,6 +136,10 @@ tw-passage { max-width: 1120px; margin: 0 auto; }
 tw-link, .enchantment-link { color: var(--nuit); font-weight: 600; text-decoration: none; }
 /* Harlowe colore en violet les liens déjà visités : ici, ils passent en vert (demande de Manon) */
 tw-link.visited, .enchantment-link.visited, tw-link.visited:hover { color: #2e8b3e; }
+/* « Commencer l’aventure » et « Poursuis » restent toujours dans le bleu nuit d'origine */
+.elan tw-link.visited, .elan tw-link.visited:hover { color: var(--nuit); }
+/* Les chapitres proposés par le dé, en noir, même déjà lus */
+.tirage tw-link, .tirage .enchantment-link, .tirage tw-link.visited, .tirage tw-link:hover { color: var(--encre); }
 tw-link:hover, .enchantment-link:hover { color: var(--nuit); text-decoration: underline; text-underline-offset: 0.2em; }
 
 /* Encadré du dé : bordure bleu nuit et ombre pleine jaune paille ; à gauche, le chapeau de paille détouré
@@ -195,14 +204,41 @@ tw-story:has(.garde) { padding-top: 0; padding-bottom: 0; }
 
 /* Liens secondaires de la page de garde et lien de retour à la couverture en haut des chapitres */
 .garde .secondaires { justify-content: flex-start; margin-top: clamp(0.5em, 1.6vh, 1.1em); }
-.retour { max-width: 1120px; margin: 0 auto 1.2em; line-height: 1.6; }
+.retour { display: block; margin: 0 0 1.4em; line-height: 1.6; }
 .retour tw-link, .retour .enchantment-link { font-size: 0.95rem; }
 .retour tw-link::before, .retour .enchantment-link::before { content: "← "; }
 
 /* Pages annexes */
 .lien-retour { display: block; margin-bottom: 1.4em; font-size: 0.95rem; }
 .lien-retour tw-link::before { content: "← "; }
-.contexte { max-width: 680px; margin: 0 auto; }
+/* Page « Comment est née cette histoire » (modèle commun aux livres de l'atelier) */
+.contexte { max-width: 1000px; margin: 0 auto; text-align: center; }
+.contexte .lien-retour { text-align: left; }
+.contexte h1 span { background: linear-gradient(transparent 62%, var(--paille) 62% 92%, transparent 92%); }
+.contexte-texte { max-width: 38em; margin: 0 auto; }
+.portraits { display: flex; justify-content: center; align-items: flex-end; gap: 3em; margin: 0.5em 0 0.6em; }
+.portraits figure { margin: 0; }
+.portraits img { display: block; height: 9em; width: auto; margin: 0 auto; }
+.portraits figure:nth-child(2) img { height: 5em; }  /* Gertrude est plus petite que Kévine */
+.portraits figcaption { font-family: "Chiffres pixel", "Pixelify Sans", monospace; font-weight: 600; color: var(--nuit); margin-top: 0.3em; }
+.citation { max-width: 30em; margin: 1.8em auto; font-family: "Chiffres pixel", "Pixelify Sans", monospace; font-weight: 600; font-size: 1.4em; line-height: 1.35; color: var(--nuit); }
+.citation .source { display: block; margin-top: 0.5em; font-family: "Source Serif 4", serif; font-weight: 400; font-style: italic; font-size: 0.6em; color: #5c6670; }
+.table-fiches { margin: 2.4em auto 0; padding: 1.6em 1.5em; background: var(--nuit-clair); border: 3px solid var(--nuit); box-shadow: 5px 5px 0 var(--paille); }
+.titre-table { display: block; font-family: "Chiffres pixel", "Pixelify Sans", monospace; font-weight: 600; font-size: 1.3em; margin-bottom: 1.1em; }
+.miniatures { display: flex; justify-content: center; align-items: flex-start; flex-wrap: wrap; gap: 1.8em; }
+.miniatures figure { margin: 0; }
+.miniatures figcaption { margin-top: 0.7em; font-style: italic; color: #5c6670; }
+.miniature { display: block; padding: 0; border: none; background: none; cursor: zoom-in; }
+.miniature img { display: block; height: 13em; width: auto; box-shadow: 0 4px 14px rgba(20, 80, 127, 0.3); transition: transform 0.2s ease; }
+.miniatures figure:nth-child(1) img { transform: rotate(-2deg); }
+.miniatures figure:nth-child(3) img { transform: rotate(2deg); }
+.miniature:hover img { transform: rotate(0) scale(1.04); }
+.contexte .credits { margin-top: 1.6em; color: #5c6670; }
+.contexte .secondaires { justify-content: center; margin-top: 1.2em; }
+/* Fiche ouverte en grand par-dessus la page ; un clic ou Échap la referme */
+.agrandi { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; padding: 2vh 2vw; background: rgba(20, 50, 80, 0.85); cursor: zoom-out; }
+.agrandi img { max-width: 100%; max-height: 96vh; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4); }
+@media (max-width: 600px) { .portraits img { height: 6em; } .miniature img { height: 10em; } }
 .contexte h1, .arbre h1 { font-family: "Chiffres pixel", "Pixelify Sans", monospace; font-weight: 600; font-size: clamp(1.6rem, 3.2vw, 2.1rem); color: var(--encre); margin: 0 0 0.6em; line-height: 1.1; }
 .credits { display: block; margin-top: 1.6em; font-size: 0.9rem; font-style: italic; white-space: pre-line; }
 .arbre { text-align: center; }
@@ -211,6 +247,8 @@ tw-story:has(.garde) { padding-top: 0; padding-bottom: 0; }
 @media (max-width: 820px) {
   tw-story { padding: 1.4em 1em 3em; }
   .page { grid-template-columns: minmax(0, 1fr); gap: 1.2em; }
+  .page .texte { padding: 0 1em 3em; }
+  .cote img { width: 100%; height: auto; }
   .cote { position: relative; top: auto; }
 }
 """
@@ -288,6 +326,24 @@ SEPARATEUR = separateur("diamant")
 # Le chapeau tient lieu de dé : on le touche, il se secoue et montre un nombre de 1 à 6 (pair et impair
 # ont la même probabilité). Il ne choisit jamais à la place du lecteur, qui suit ensuite le bon renvoi.
 SCRIPT = """
+// Page de contexte : une fiche s'ouvre en grand, un clic referme
+document.addEventListener('click', function (evenement) {
+  var ouvert = document.querySelector('.agrandi');
+  if (ouvert) { ouvert.remove(); return; }
+  var miniature = evenement.target.closest('.miniature');
+  if (!miniature) return;
+  var fond = document.createElement('div');
+  fond.className = 'agrandi';
+  var image = document.createElement('img');
+  image.src = miniature.querySelector('img').src;
+  image.alt = miniature.querySelector('img').alt;
+  fond.appendChild(image);
+  document.body.appendChild(fond);
+});
+document.addEventListener('keydown', function (evenement) {
+  var ouvert = document.querySelector('.agrandi');
+  if (ouvert && evenement.key === 'Escape') ouvert.remove();
+});
 document.addEventListener('click', function (evenement) {
   var chapeau = evenement.target.closest('.chapeau');
   if (!chapeau || chapeau.classList.contains('roule')) return;
@@ -348,7 +404,8 @@ def passage_chapitre(ch, mention):
     # Deux images par chapitre : la miniature carrée à côté du numéro et du titre, la grande image A5 à côté du texte
     miniature = RACINE / f"images/miniatures/{illustration(ch['nom'])}.jpg"
     vignette = (f'<img class="miniature" src="images/miniatures/{miniature.name}" alt="">' if miniature.exists() else "")
-    texte = (f'<div class="texte"><h1 class="chapitre">{vignette}<span class="entete">{numero}'
+    retour = f'<span class="retour">{lien("Couverture", "Couverture")}</span>'
+    texte = (f'<div class="texte">{retour}<h1 class="chapitre">{vignette}<span class="entete">{numero}'
              f'<span class="titre"><span>{ch["titre"]}</span></span></span></h1>'
              + "\n\n".join(corps) + "".join(suite) + "</div>")
     image = RACINE / f"images/grandes/{illustration(ch['nom'])}.jpg"
@@ -370,14 +427,40 @@ def passage_garde(mention):
             f'<span class="mention">{AVERTISSEMENT_COURT}</span></div></div>')
 
 
+# Une phrase de leur fiche récit, à peine remise au propre
+CITATION = "Son frère arrive et lui dit qu’un fermier ne pourra jamais sauver le monde !"
+
+
+def miniature(fichier, legende, description):
+    return (f'<figure><button class="miniature" type="button" aria-label="Agrandir {description}">'
+            f'<img src="images/fiches/{fichier}" alt="{description}"></button>'
+            f'<figcaption>{legende}</figcaption></figure>')
+
+
+def portrait(fichier, nom):
+    return (f'<figure><img src="images/dessins/{fichier}" alt="{nom}, dessiné par Antoine et Émile">'
+            f'<figcaption>{nom}</figcaption></figure>')
+
+
 def passage_contexte(mention):
+    """Modèle commun : dessins des enfants détourés, titre, séparateur, texte centré, une phrase de leur fiche
+    récit, les fiches de l'atelier en miniatures cliquables, les crédits et la mention longue."""
     return (
-        f'<div class="contexte"><span class="lien-retour">{lien("Retour au début", "Couverture")}</span>'
-        f'<h1>Comment est née cette histoire</h1>{SEPARATEUR}'
-        + "\n\n".join(CONTEXTE)
-        + '<span class="credits">Une histoire librement inspirée du récit d’Antoine et d’Émile.\nRéalisation du livre : '
+        f'<div class="contexte"><span class="lien-retour">{lien("Couverture", "Couverture")}</span>'
+        '<div class="portraits">' + portrait("kevine.png", "Kévine") + portrait("gertrude.png", "Gertrude") + '</div>'
+        f'<h1><span>Comment est née cette histoire</span></h1>{SEPARATEUR}'
+        '<div class="contexte-texte">' + "\n\n".join(CONTEXTE[:4])
+        + f'<div class="citation">« {CITATION} »<span class="source">Antoine et Émile, sur leur fiche récit</span></div>'
+        + CONTEXTE[4] + '</div>'
+        '<div class="table-fiches"><span class="titre-table">Les fiches de l’atelier</span><div class="miniatures">'
+        + miniature("fiche_recit.jpg", "Le récit", "la fiche récit, par Antoine et Émile")
+        + miniature("fiche_personnage_kevine.jpg", "Une fiche personnage", "la fiche personnage de Kévine")
+        + miniature("fiche_situation_1.jpg", "Une fiche à embranchement", "la fiche situation n° 1, avec ses choix au dé")
+        + '</div></div>'
+        '<span class="credits">Une histoire librement inspirée du récit d’Antoine et d’Émile.\nRéalisation du livre : '
         "Laboratoire d’Aix-périmentation et de Bidouille.</span>"
-        f'<span class="mention">{mention}</span></div>'
+        f'<span class="mention">{mention}</span>'
+        f'<div class="secondaires">{lien("Commencer le livre", "Prologue")}</div></div>'
     )
 
 
@@ -403,10 +486,6 @@ def construire():
 
     mention = e(lire_mention())
     passages = [
-        # En haut de chaque chapitre, un petit lien pour revenir à la couverture (comme sur les autres livres)
-        ("Bouton couverture", "header",
-         '(unless: (a: "Couverture", "L’arbre de l’histoire", "Comment est née cette histoire") contains (passage:)\'s name)'
-         '[<div class="retour">[[Couverture->Couverture]]</div>]'),
         ("Couverture", "", passage_garde(mention)),
     ]
     for ch in lire_chapitres():
