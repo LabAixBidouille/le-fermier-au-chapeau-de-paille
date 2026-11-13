@@ -156,10 +156,20 @@ tw-passage:has(.garde) { max-width: none; width: 100%; margin: 0; }
 }
 
 /* Liens secondaires de la page de garde et lien de retour à la couverture en haut des chapitres */
-.garde .secondaires { justify-content: flex-start; margin-top: clamp(0.5em, 1.6vh, 1.1em); }
+.garde .secondaires { justify-content: flex-start; margin-top: clamp(0.9em, 2.4vh, 1.5em); }
 .retour { display: block; margin: 0 0 1.4em; line-height: 1.6; }
 .retour tw-link, .retour .enchantment-link { font-size: 0.95rem; }
 .retour tw-link::before, .retour .enchantment-link::before { content: "← "; }
+
+/* Liens secondaires (couverture, fin, contexte) : petits boutons encadrés, distincts du grand lien pixel
+   « Commencer l’aventure » ; pas de changement de couleur au survol, ils se soulèvent */
+.secondaires { display: flex; flex-wrap: wrap; gap: 0.7em 0.9em; }
+.secondaires tw-link, .secondaires .enchantment-link, .secondaires tw-link.visited {
+  display: inline-block; font-family: "Source Serif 4", serif; font-weight: 600; font-size: 0.92rem; color: var(--nuit);
+  background: #fff; border: 2px solid var(--nuit); box-shadow: 3px 3px 0 var(--paille); padding: 0.3em 0.85em;
+  text-decoration: none; transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.secondaires tw-link:hover, .secondaires .enchantment-link:hover { text-decoration: none; transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--paille); }
 
 /* Pages annexes */
 .lien-retour { display: block; margin-bottom: 1.4em; font-size: 0.95rem; }
