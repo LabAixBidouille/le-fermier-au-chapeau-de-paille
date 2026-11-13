@@ -106,8 +106,8 @@ def construire():
             etiquettes.append(
                 f'<rect x="{x - largeur / 2:.0f}" y="{milieu - 12:.0f}" width="{largeur:.0f}" height="24" fill="{NUIT}"/>'
                 f'<text x="{x:.0f}" y="{milieu + 5:.0f}" text-anchor="middle" '
-                + ('font-family="Pixelify Sans" font-weight="600" font-size="15"' if pixel
-                   else 'font-family="Source Serif 4" font-style="italic" font-size="14"')
+                + ('font-family="&apos;Pixelify Sans&apos;" font-weight="600" font-size="15"' if pixel
+                   else 'font-family="&apos;Source Serif 4&apos;, serif" font-style="italic" font-size="14"')
                 + f' fill="#fff">{html.escape(texte)}</text>')
     for a in tirages_de:
         x, y = pos[a]
@@ -130,9 +130,9 @@ def construire():
             f'<image x="{x0:.0f}" y="{y}" width="{VIGNETTE}" height="{H_CASE}" preserveAspectRatio="xMidYMid slice" '
             f'clip-path="url(#v{n})" href="{image_integree(image, 160)}"/>'
             f'<rect x="{x0 + VIGNETTE + 12:.0f}" y="{y + 12}" width="{l_num:.0f}" height="21" rx="3" fill="{CIEL}"/>'
-            f'<text x="{x0 + VIGNETTE + 12 + l_num / 2:.0f}" y="{y + 28}" text-anchor="middle" font-family="Chiffres, Pixelify Sans" '
+            f'<text x="{x0 + VIGNETTE + 12 + l_num / 2:.0f}" y="{y + 28}" text-anchor="middle" font-family="Chiffres, &apos;Pixelify Sans&apos;" '
             f'font-weight="600" font-size="14" fill="#fff">{numero}</text>'
-            + "".join(f'<text x="{x0 + VIGNETTE + 12:.0f}" y="{y_titre + i * 18:.0f}" font-family="Source Serif 4" '
+            + "".join(f'<text x="{x0 + VIGNETTE + 12:.0f}" y="{y_titre + i * 18:.0f}" font-family="&apos;Source Serif 4&apos;, serif" '
                       f'font-weight="600" font-size="15.5" fill="{ENCRE}">{html.escape(l)}</text>' for i, l in enumerate(texte))
             # Le cadre est tracé en dernier, par-dessus la vignette : il fait le tour de la carte sans interruption
             + f'<rect x="{x0:.0f}" y="{y}" width="{L_CASE}" height="{H_CASE}" rx="8" fill="none" stroke="{PAILLE if fin else NUIT}" '

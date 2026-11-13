@@ -66,8 +66,41 @@ def preparer():
     im = im.resize((LARGEUR, round(LARGEUR * im.height / im.width)), Image.LANCZOS)
     im, cote = prolonger(im)
     im.save(SORTIE / "couverture.jpg", quality=88)
+    nebuleuse(im).save(SORTIE / "couverture-nebuleuse.jpg", quality=90)
     print("couverture", cote)
 
+
+def nebuleuse(im, haut_mm=9, bas_mm=58):
+    """Un halo blanc doux et nuageux, aux bords irréguliers et diffus, peint dans l'image derrière le titre
+    (intégré à l'image : rien ne peut se décaler à l'impression ou à l'imposition)."""
+    from PIL import ImageFilter
+    w, h = im.size
+    px = h / 186                                                   # pixels par mm
+    hasard = np.random.default_rng(7)
+    yy, xx = np.mgrid[0:h, 0:w].astype(float)
+    cy, cx = (haut_mm + bas_mm) / 2 * px, w / 2
+    ry, rx = (bas_mm - haut_mm) / 2 * px, w * 0.40
+    # cœur : ellipse au bord progressif (dense derrière le texte, puis s'efface)
+    d = np.sqrt(((xx - cx) / rx) ** 2 + ((yy - cy) / ry) ** 2)
+    masque = np.clip(1.6 - d, 0, 1) ** 0.9
+    # volutes : petites nappes autour du cœur, de taille et d'intensité variées
+    for _ in range(40):
+        a = hasard.uniform(0, 2 * np.pi)
+        k = hasard.uniform(0.7, 1.25)
+        bx, by = cx + np.cos(a) * rx * k, cy + np.sin(a) * ry * k
+        r = hasard.uniform(0.12, 0.3) * ry * 1.8
+        masque = np.maximum(masque, np.clip(1 - np.sqrt((xx - bx) ** 2 + (yy - by) ** 2) / r, 0, 1) ** 1.5
+                            * hasard.uniform(0.35, 0.75))
+    # grain de nuage : bruit adouci, surtout sur les bords
+    for echelle, poids in ((90, 0.45), (30, 0.25)):
+        bruit = Image.fromarray((hasard.random((h // echelle + 2, w // echelle + 2)) * 255).astype("uint8"))
+        bruit = np.asarray(bruit.resize((w, h), Image.BICUBIC)).astype(float) / 255 - 0.5
+        masque = masque + bruit * poids * np.clip(masque * (1 - masque) * 4, 0, 1)
+    alpha = Image.fromarray((np.clip(masque, 0, 1) * 255).astype("uint8")).filter(ImageFilter.GaussianBlur(px * 2.2))
+    alpha = np.asarray(alpha).astype(float) / 255 * 0.95
+    a = np.asarray(im).astype(float)
+    out = a * (1 - alpha[..., None]) + np.array([248, 251, 255]) * alpha[..., None]
+    return Image.fromarray(out.clip(0, 255).astype("uint8"))
 
 if __name__ == "__main__":
     preparer()
