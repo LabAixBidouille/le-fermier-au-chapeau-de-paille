@@ -170,8 +170,8 @@ h2 span {{ {SURLIGNE} box-decoration-break: clone; -webkit-box-decoration-break:
 .contexte h3 span {{ {SURLIGNE} }}
 .contexte p {{ font-size: 11pt; }}
 .portraits {{ display: flex; justify-content: center; align-items: flex-end; gap: 7mm; margin-bottom: 4mm; }}
-/* Chaque dessin sur une carte bleu clair encadrée de bleu nuit, ombre jaune, pour qu'il ressorte */
-.portraits span {{ display: block; background: #eef8ff; border: 0.8mm solid #14507f; box-shadow: 1.3mm 1.3mm 0 #f7c531; padding: 2.5mm 3mm; }}
+/* Dessins des enfants détourés, sans fond, comme sur les autres livres */
+.portraits span {{ display: block; }}
 .portraits img {{ display: block; height: 30mm; width: auto; }}
 .portraits img.petit {{ height: 16mm; }}
 .citation {{ font-family: {TITRE_POLICE}; font-weight: 600; font-size: 12pt; line-height: 1.35; color: {NUIT}; margin: 3mm 4mm; }}
