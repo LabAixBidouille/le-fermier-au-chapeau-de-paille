@@ -49,7 +49,7 @@ tw-passage { max-width: 1120px; margin: 0 auto; }
 /* Pages de lecture : la grande image à gauche, collée au bord de la fenêtre et sur toute sa hauteur, sans marge ;
    le texte à droite, avec le lien « ← Couverture » en tête */
 tw-story:has(.page) { padding: 0; }
-tw-passage:has(.page) { max-width: none; }
+tw-passage:has(.page) { max-width: none; width: 100%; margin: 0; }
 .page { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: clamp(1.5em, 4vw, 3.5em); align-items: start; }
 .page .texte { max-width: 760px; padding: 2em clamp(1em, 3vw, 2.5em) 4em 0; }
 .page.sans-image { grid-template-columns: minmax(0, 1fr); max-width: 680px; margin: 0 auto; }
@@ -61,7 +61,7 @@ tw-passage:has(.page) { max-width: none; }
 
 .chapitre { font-size: 1rem; margin: 0 0 1.1em; font-weight: 400; line-height: 1.05; display: flex; align-items: center; gap: 1em; }
 .chapitre .entete { display: block; min-width: 0; }
-.chapitre .miniature { flex: none; width: 92px; height: 92px; border-radius: 8px; box-shadow: 0 6px 14px -6px rgba(20, 80, 127, 0.6); }
+.chapitre .miniature { order: 2; margin-left: auto; flex: none; width: 92px; height: 92px; border-radius: 8px; box-shadow: 0 6px 14px -6px rgba(20, 80, 127, 0.6); }
 .chapitre .numero { display: inline-block; font-family: "Chiffres pixel", "Pixelify Sans", monospace; font-weight: 600; font-size: 1.05rem; color: #fff; background: var(--ciel); padding: 0.1em 0.6em; border-radius: 3px; margin-bottom: 0.45em; }
 .chapitre .titre { display: block; font-family: "Chiffres pixel", "Pixelify Sans", monospace; font-weight: 600; font-size: clamp(1.6rem, 3.2vw, 2.15rem); color: var(--encre); }
 .chapitre .titre span { background: linear-gradient(transparent 62%, var(--paille) 62% 92%, transparent 92%); box-decoration-break: clone; -webkit-box-decoration-break: clone; }
@@ -134,7 +134,7 @@ tw-link:hover, .enchantment-link:hover { color: var(--nuit); text-decoration: un
 /* Page de garde : l'image à gauche, le titre à droite, le tout tient dans l'écran */
 /* Tout tient dans la hauteur de la fenêtre : marges de la page réduites, tailles calculées sur la hauteur */
 tw-story:has(.garde) { padding: 0; }
-tw-passage:has(.garde) { max-width: none; }
+tw-passage:has(.garde) { max-width: none; width: 100%; margin: 0; }
 /* Comme les chapitres : l'image collée au bord gauche, sur toute la hauteur, sans marge ni recadrage */
 .garde { display: flex; align-items: center; gap: clamp(1.5em, 4vw, 3.5em); height: calc(100vh - 14px); box-sizing: border-box; padding: 0 clamp(1em, 3vw, 2.5em) 0 0; }
 /* Couverture recadrée en carré (Manon, 13/11/2026 : « qu'elle prenne plus de place ») */
