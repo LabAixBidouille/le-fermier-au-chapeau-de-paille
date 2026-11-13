@@ -41,7 +41,7 @@ def lignes_titre(titre, largeur=22):
 def police(fichier, nom, style="normal", plage=""):
     code = base64.b64encode((RACINE / "fonts" / fichier).read_bytes()).decode()
     return (f'@font-face {{ font-family: "{nom}"; font-style: {style}; font-weight: 400 800; '
-            f'src: url(data:font/woff2;base64,{code}) format("woff2");{plage} }}')
+            f'src: url(data:font/ttf;base64,{code}) format("truetype");{plage} }}')
 
 
 def image_integree(chemin, cote, carre=True):
@@ -139,9 +139,9 @@ def construire():
               f'stroke-width="{4 if fin else 2.5}"/></g>')
 
     svg = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {LARGEUR} {hauteur:.0f}" width="{LARGEUR}" '
-           f'height="{hauteur:.0f}"><style>{police("PixelifySans.woff2", "Pixelify Sans")}'
-           f'{police("ChiffresBricolage.woff2", "Chiffres", plage=" unicode-range: U+30-39;")}'
-           f'{police("SourceSerif4.woff2", "Source Serif 4")}{police("SourceSerif4-italique.woff2", "Source Serif 4", "italic")}</style>'
+           f'height="{hauteur:.0f}"><style>{police("fixes/PixelifySans-600.ttf", "Pixelify Sans")}'
+           f'{police("fixes/ChiffresBricolage.ttf", "Chiffres", plage=" unicode-range: U+30-39;")}'
+           f'{police("fixes/SourceSerif4-600.ttf", "Source Serif 4")}{police("fixes/SourceSerif4-Italic-400.ttf", "Source Serif 4", "italic")}</style>'
            f'<path d="{" ".join(traits)}" fill="none" stroke="{NUIT}" stroke-width="3" stroke-linejoin="round"/>'
            f'<g fill="{NUIT}">{"".join(pointes)}</g>{"".join(cases)}{"".join(etiquettes)}{"".join(chapeaux)}</svg>')
     SORTIE.write_text(svg, encoding="utf-8")
