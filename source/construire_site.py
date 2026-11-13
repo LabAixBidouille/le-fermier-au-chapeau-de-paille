@@ -110,7 +110,8 @@ tw-passage:has(.page) { max-width: none; width: 100%; margin: 0; }
 
 .chapitre { font-size: 1rem; margin: 0 0 1.1em; font-weight: 400; line-height: 1.05; display: flex; align-items: center; gap: 1em; }
 .chapitre .entete { display: block; min-width: 0; }
-.chapitre .miniature { order: 2; margin-left: auto; flex: none; width: 92px; height: 92px; border-radius: 8px; box-shadow: 0 6px 14px -6px rgba(20, 80, 127, 0.6); }
+/* La miniature encadrée comme le dé : bord bleu nuit, ombre pleine jaune paille */
+.chapitre .miniature { order: 2; margin-left: auto; margin-right: 5px; flex: none; width: 92px; height: 92px; box-sizing: border-box; border: 3px solid var(--nuit); box-shadow: 4px 4px 0 var(--paille); }
 .chapitre .numero { display: inline-block; font-family: "Chiffres pixel", "Pixelify Sans", monospace; font-weight: 600; font-size: 1.05rem; color: #fff; background: var(--ciel); padding: 0.1em 0.6em; border-radius: 3px; margin-bottom: 0.45em; }
 .chapitre .titre { display: block; font-family: "Chiffres pixel", "Pixelify Sans", monospace; font-weight: 600; font-size: clamp(1.6rem, 3.2vw, 2.15rem); color: var(--encre); }
 .chapitre .titre span { background: linear-gradient(transparent 62%, var(--paille) 62% 92%, transparent 92%); box-decoration-break: clone; -webkit-box-decoration-break: clone; }
