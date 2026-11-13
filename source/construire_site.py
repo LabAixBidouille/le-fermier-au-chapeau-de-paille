@@ -100,9 +100,12 @@ tw-passage { max-width: 1120px; margin: 0 auto; }
 /* L'image reste exactement là où elle apparaît (bandeau 14 px + marge haute de la page) : en lisant, elle ne
    remonte pas dans la marge, elle accompagne le texte */
 .cote { position: sticky; top: calc(14px + 3 * 1.08rem + 49px); }  /* 49 px : la ligne « ← Couverture » au-dessus */
-.cote img { display: block; width: 100%; height: auto; border-radius: 8px; box-shadow: 0 14px 30px -14px rgba(20, 80, 127, 0.55); }
+/* La grande image (A5, en hauteur) tient toujours dans la fenêtre */
+.cote img { display: block; width: auto; max-width: 100%; height: auto; max-height: calc(100vh - 14px - 3 * 1.08rem - 49px - 1.5em); margin: 0 auto; border-radius: 8px; box-shadow: 0 14px 30px -14px rgba(20, 80, 127, 0.55); }
 
-.chapitre { font-size: 1rem; margin: 0 0 1.1em; font-weight: 400; line-height: 1.05; }
+.chapitre { font-size: 1rem; margin: 0 0 1.1em; font-weight: 400; line-height: 1.05; display: flex; align-items: center; gap: 1em; }
+.chapitre .entete { display: block; min-width: 0; }
+.chapitre .miniature { flex: none; width: 92px; height: 92px; border-radius: 8px; box-shadow: 0 6px 14px -6px rgba(20, 80, 127, 0.6); }
 .chapitre .numero { display: inline-block; font-family: "Chiffres pixel", "Pixelify Sans", monospace; font-weight: 600; font-size: 1.05rem; color: #fff; background: var(--ciel); padding: 0.1em 0.6em; border-radius: 3px; margin-bottom: 0.45em; }
 .chapitre .titre { display: block; font-family: "Chiffres pixel", "Pixelify Sans", monospace; font-weight: 600; font-size: clamp(1.6rem, 3.2vw, 2.15rem); color: var(--encre); }
 .chapitre .titre span { background: linear-gradient(transparent 62%, var(--paille) 62% 92%, transparent 92%); box-decoration-break: clone; -webkit-box-decoration-break: clone; }
@@ -340,11 +343,15 @@ def passage_chapitre(ch, mention):
                  f'{lien("L’arbre de l’histoire", "L’arbre de l’histoire")}'
                  f'{lien("Relire depuis le début", "Prologue")}</div></div>']
     numero = f'<span class="numero">{ch["numero"]}</span>'
-    texte = (f'<div class="texte"><h1 class="chapitre">{numero}<span class="titre"><span>{ch["titre"]}</span></span></h1>'
+    # Deux images par chapitre : la miniature carrée à côté du numéro et du titre, la grande image A5 à côté du texte
+    miniature = RACINE / f"images/miniatures/{illustration(ch['nom'])}.jpg"
+    vignette = (f'<img class="miniature" src="images/miniatures/{miniature.name}" alt="">' if miniature.exists() else "")
+    texte = (f'<div class="texte"><h1 class="chapitre">{vignette}<span class="entete">{numero}'
+             f'<span class="titre"><span>{ch["titre"]}</span></span></span></h1>'
              + "\n\n".join(corps) + "".join(suite) + "</div>")
-    image = RACINE / f"images/chapitres/{illustration(ch['nom'])}.jpg"
+    image = RACINE / f"images/grandes/{illustration(ch['nom'])}.jpg"
     if image.exists():
-        cote = f'<div class="cote"><img src="images/chapitres/{image.name}" alt="{e(ch["titre"])}"></div>'
+        cote = f'<div class="cote"><img src="images/grandes/{image.name}" alt="{e(ch["titre"])}"></div>'
         return f'<div class="page">{cote}{texte}</div>'
     return f'<div class="page sans-image">{texte}</div>'
 
