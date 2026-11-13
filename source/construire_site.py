@@ -106,9 +106,9 @@ tw-passage { max-width: 1120px; margin: 0 auto; }
 .separateur-oeil .trait { background: #2fae7a; }
 .separateur .objet { width: 30px; height: auto; display: block; }
 
-/* Renvoi simple (choix A de Manon) : un lien en police pixel bleu nuit, aligné à droite, suivi d'une petite
+/* Renvoi simple (choix A de Manon) : un lien en police pixel bleu nuit, centré sous le séparateur, suivi d'une petite
    flèche en pixels bleu ciel ; il se souligne au survol */
-.elan { display: flex; justify-content: flex-end; margin-top: 0.4em; }
+.elan { display: flex; justify-content: center; margin-top: 0.4em; }
 .elan tw-link, .elan .enchantment-link {
   display: inline-flex; align-items: center; gap: 0.55em; font-family: "Pixelify Sans", monospace; font-weight: 600;
   font-size: 1.2rem; color: var(--nuit); text-decoration: none;
