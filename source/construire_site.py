@@ -134,8 +134,8 @@ tw-passage:has(.page) { max-width: none; }
 .elan tw-link::after, .elan .enchantment-link::after { content: ""; width: 22px; height: 22px; flex: none; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' shape-rendering='crispEdges'%3E%3Crect x='0' y='3' width='5' height='2' fill='%233aa0e8'/%3E%3Crect x='4' y='1' width='1' height='6' fill='%233aa0e8'/%3E%3Crect x='5' y='2' width='1' height='4' fill='%233aa0e8'/%3E%3Crect x='6' y='3' width='1' height='2' fill='%233aa0e8'/%3E%3C/svg%3E") center / contain no-repeat; }
 .elan tw-link:hover, .elan .enchantment-link:hover { text-decoration: underline; text-underline-offset: 0.25em; }
 tw-link, .enchantment-link { color: var(--nuit); font-weight: 600; text-decoration: none; }
-/* Harlowe colore en violet les liens déjà visités : ici, ils passent en vert (demande de Manon) */
-tw-link.visited, .enchantment-link.visited, tw-link.visited:hover { color: #2e8b3e; }
+/* Harlowe colore les liens déjà visités : ici, aucun lien ne change de couleur après un clic (demande de Manon) */
+tw-link.visited, .enchantment-link.visited, tw-link.visited:hover { color: var(--nuit); }
 /* « Commencer l’aventure » et « Poursuis » restent toujours dans le bleu nuit d'origine */
 .elan tw-link.visited, .elan tw-link.visited:hover { color: var(--nuit); }
 /* Les chapitres proposés par le dé, en noir, même déjà lus */
@@ -311,9 +311,27 @@ def lire_choix(ch):
 # Séparateurs : un objet en voxel dessiné par Manon (diamant, flamme, œil), entre deux traits de sa couleur.
 
 
+RANGS = {}
+
+
+def rangs_de_lecture():
+    """Rang de chaque chapitre dans l'arbre (une ligne de plus que son prédécesseur le plus bas) : tout chemin de
+    lecture passe d'un rang au suivant, donc l'objet change à chaque chapitre, quel que soit le parcours."""
+    if not RANGS:
+        aretes = []
+        for ch in lire_chapitres():
+            _, _, tirages, options, renvoi, _ = lire_choix(ch)
+            a = 0 if ch["nom"] == "Prologue" else int(ch["nom"].split()[-1])
+            aretes += [(a, n) for _, n in tirages] + [(a, n) for _, n in options] + ([(a, renvoi)] if renvoi else [])
+        RANGS[0] = 0
+        for n in sorted({b for _, b in aretes}):
+            RANGS[n] = max(RANGS[a] for a, b in aretes if b == n) + 1
+    return RANGS
+
+
 def objet_du_chapitre(cle):
-    """Le diamant, la flamme et l'œil alternent d'un chapitre à l'autre (choix de Manon, 13/11/2026)."""
-    return ("diamant", "flamme", "oeil")[cle % 3]
+    """Le diamant, la flamme et l'œil alternent strictement le long de la lecture (choix de Manon, 13/11/2026)."""
+    return ("diamant", "flamme", "oeil")[rangs_de_lecture()[cle] % 3]
 
 
 def separateur(objet):
