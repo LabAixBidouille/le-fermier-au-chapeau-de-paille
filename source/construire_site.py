@@ -228,10 +228,11 @@ tw-passage:has(.garde) { max-width: none; width: 100%; margin: 0; }
 .contexte .lien-retour { text-align: left; }
 .contexte h1 span { background: linear-gradient(transparent 62%, var(--paille) 62% 92%, transparent 92%); }
 .contexte-texte { max-width: 38em; margin: 0 auto; }
-.portraits { display: flex; justify-content: center; align-items: flex-end; gap: 3em; margin: 0.5em 0 0.6em; }
-.portraits figure { margin: 0; }
-.portraits img { display: block; height: 9em; width: auto; margin: 0 auto; }
-.portraits figure:nth-child(2) img { height: 5em; }  /* Gertrude est plus petite que Kévine */
+.portraits { display: flex; justify-content: center; align-items: flex-end; flex-wrap: wrap; gap: 1.5em 3em; margin: 0.8em 0 1.4em; }
+/* Chaque dessin des enfants posé sur une carte encadrée comme l'encadré du dé, pour qu'il ressorte */
+.portraits figure { margin: 0; background: var(--nuit-clair); border: 3px solid var(--nuit); box-shadow: 5px 5px 0 var(--paille); padding: 0.9em 1.2em 0.6em; }
+.portraits img { display: block; height: 11em; width: auto; margin: 0 auto; }
+.portraits figure:nth-child(2) img { height: 6.5em; }  /* Gertrude est plus petite que Kévine */
 .portraits figcaption { font-family: "Chiffres pixel", "Pixelify Sans", monospace; font-weight: 600; color: var(--nuit); margin-top: 0.3em; }
 .citation { max-width: 30em; margin: 1.8em auto; font-family: "Chiffres pixel", "Pixelify Sans", monospace; font-weight: 600; font-size: 1.4em; line-height: 1.35; color: var(--nuit); }
 .citation .source { display: block; margin-top: 0.5em; font-family: "Source Serif 4", serif; font-weight: 400; font-style: italic; font-size: 0.6em; color: #5c6670; }
