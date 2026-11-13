@@ -167,26 +167,29 @@ tw-link:hover, .enchantment-link:hover { color: var(--nuit); text-decoration: un
 .secondaires { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.4em 1.4em; margin-top: 0.8em; font-size: 0.98rem; }
 
 /* Page de garde : l'image à gauche, le titre à droite, le tout tient dans l'écran */
-.garde { display: flex; align-items: center; justify-content: center; gap: 3.2em; min-height: calc(100vh - 14px - 7em); }
+/* Tout tient dans la hauteur de la fenêtre : marges de la page réduites, tailles calculées sur la hauteur */
+tw-story:has(.garde) { padding-top: 0; padding-bottom: 0; }
+.garde { display: flex; align-items: center; justify-content: center; gap: clamp(1.5em, 4vw, 3.2em); height: calc(100vh - 14px); box-sizing: border-box; padding: 3vh 0; }
 /* Couverture recadrée en carré (Manon, 13/11/2026 : « qu'elle prenne plus de place ») */
-.garde-image { display: block; width: min(78vh, 760px, 52vw); height: auto; aspect-ratio: 1; border-radius: 8px; flex: none;
+.garde-image { display: block; width: min(80vh, 720px, 50vw); height: auto; aspect-ratio: 1; border-radius: 8px; flex: none;
   box-shadow: 0 18px 36px -16px rgba(20, 80, 127, 0.6); }
 .garde-texte { max-width: 30em; }
-.surtitre { display: block; font-style: italic; font-size: 1.05rem; color: #5c6670; }
-.garde-titre { font-family: "Chiffres pixel", "Pixelify Sans", monospace; font-weight: 600; font-size: clamp(2.2rem, 4.4vw, 3.5rem); line-height: 1.12; margin: 0.25em 0 0.35em; }
+.surtitre { display: block; font-style: italic; font-size: clamp(0.85rem, 2vh, 1.05rem); color: #5c6670; }
+.garde-titre { font-family: "Chiffres pixel", "Pixelify Sans", monospace; font-weight: 600; font-size: clamp(1.6rem, min(4vw, 6vh), 3.3rem); line-height: 1.12; margin: 0.2em 0 0.3em; }
 .garde-titre span { background: linear-gradient(transparent 62%, var(--paille) 62% 92%, transparent 92%); box-decoration-break: clone; -webkit-box-decoration-break: clone; }
-.noms { display: block; font-size: 1.25rem; }
-.resume { display: block; margin-top: 1.1em; font-size: 1.1rem; line-height: 1.6; }
-.commencer { justify-content: flex-start; margin-top: 1.6em; }
-.commencer tw-link, .commencer .enchantment-link { font-size: 1.55rem; }
-.garde .mention { margin-top: 1.8em; }
+.noms { display: block; font-size: clamp(1rem, 2.6vh, 1.25rem); }
+.resume { display: block; margin-top: 0.9em; font-size: clamp(0.92rem, 2.3vh, 1.1rem); line-height: 1.55; }
+.commencer { justify-content: flex-start; margin-top: clamp(0.6em, 2.5vh, 1.6em); }
+.commencer tw-link, .commencer .enchantment-link { font-size: clamp(1.2rem, 3.4vh, 1.55rem); }
+.garde .mention { margin-top: clamp(0.8em, 2.5vh, 1.8em); font-size: clamp(0.72rem, 1.7vh, 0.85rem); }
 @media (max-width: 820px) {
-  .garde { flex-direction: column; gap: 1.4em; min-height: 0; }
+  tw-story:has(.garde) { padding: 1.4em 1em 3em; }
+  .garde { flex-direction: column; gap: 1.4em; height: auto; padding: 0; }
   .garde-image { width: 100%; max-width: 480px; }
 }
 
 /* Liens secondaires de la page de garde et lien de retour à la couverture en haut des chapitres */
-.garde .secondaires { justify-content: flex-start; margin-top: 1.1em; }
+.garde .secondaires { justify-content: flex-start; margin-top: clamp(0.5em, 1.6vh, 1.1em); }
 .retour { max-width: 1120px; margin: 0 auto 1.2em; line-height: 1.6; }
 .retour tw-link, .retour .enchantment-link { font-size: 0.95rem; }
 .retour tw-link::before, .retour .enchantment-link::before { content: "← "; }
