@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <link rel="icon" type="image/png" sizes="48x48" href="images/favicon-48.png"><link rel="icon" type="image/png" sizes="180x180" href="images/favicon.png"><link rel="apple-touch-icon" href="images/favicon.png">
+
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta content="width=device-width, initial-scale=1" name="viewport">
 <title>Le fermier au chapeau de paille</title>
@@ -157,7 +158,7 @@ tw-passage:has(.garde) { max-width: none; width: 100%; margin: 0; }
 /* Liens secondaires de la page de garde et lien de retour à la couverture en haut des chapitres */
 .garde .secondaires { justify-content: flex-start; margin-top: clamp(0.9em, 2.4vh, 1.5em); }
 .retour { display: block; margin: 0 0 1.4em; line-height: 1.6; }
-.autres-livres, .retour tw-link, .retour .enchantment-link { font-size: 0.95rem; }
+.retour tw-link, .retour .enchantment-link { font-size: 0.95rem; }
 .retour tw-link::before, .retour .enchantment-link::before { content: "← "; }
 
 /* Liens secondaires (couverture, fin, contexte) : petits boutons encadrés, distincts du grand lien pixel
@@ -215,13 +216,6 @@ tw-passage:has(.garde) { max-width: none; width: 100%; margin: 0; }
   .cote { position: relative; top: auto; }
 }
 
-/* Lien discret vers la page qui réunit tous les livres de l'atelier, en bas à droite de la page de garde */
-.garde { position: relative; }
-.autres-livres { position: absolute; right: 0.4em; bottom: 0.6em; z-index: 3; text-decoration: none; }
-.autres-livres::after { content: " →"; }
-@media (max-width: 760px) {
-  .autres-livres { position: static; order: 99; align-self: center; display: block; text-align: center; margin: 1.2em auto 0.4em; }
-}
 </style><script role="script" id="twine-user-script" type="text/twine-javascript">
 // Page de contexte : une fiche s'ouvre en grand, un clic referme
 document.addEventListener('click', function (evenement) {
@@ -255,7 +249,7 @@ document.addEventListener('click', function (evenement) {
     chapeau.classList.add('montre');
   }, 620);
 });
-</script><tw-passagedata pid="1" name="Couverture" tags="" position="150,0" size="100,100">&lt;div class=&quot;garde&quot;&gt;&lt;a class=&quot;autres-livres&quot; href=&quot;https://labaixbidouille.github.io/la-quete-du-curry/&quot; target=&quot;_top&quot;&gt;Découvrir les autres livres&lt;/a&gt;&lt;img class=&quot;garde-image&quot; src=&quot;images/couverture.jpg&quot; alt=&quot;&quot;&gt;&lt;div class=&quot;garde-texte&quot;&gt;&lt;span class=&quot;surtitre&quot;&gt;Une histoire dont le lecteur est le héros&lt;/span&gt;&lt;h1 class=&quot;garde-titre&quot;&gt;&lt;span&gt;Le fermier au chapeau de paille&lt;/span&gt;&lt;/h1&gt;&lt;span class=&quot;noms&quot;&gt;Antoine et Émile&lt;/span&gt;&lt;span class=&quot;resume&quot;&gt;Quand l’ombre d’un dragon condamne les récoltes de son village, Kévine, jeune fermier au chapeau de paille, part affronter l’inconnu avec Gertrude, sa fidèle renarde. Pour sauver les siens, il devra découvrir qu’un héros peut venir des champs.&lt;/span&gt;&lt;div class=&quot;elan commencer&quot;&gt;[[Commencer l’aventure-&gt;Prologue]]&lt;/div&gt;&lt;div class=&quot;secondaires&quot;&gt;[[Comment est née cette histoire-&gt;Comment est née cette histoire]][[L’arbre de l’histoire-&gt;L’arbre de l’histoire]]&lt;/div&gt;&lt;span class=&quot;mention&quot;&gt;Fan fiction librement inspirée du jeu vidéo Minecraft · Ce livre n’est ni approuvé ni soutenu par Mojang Studios ou Microsoft.&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="2" name="Prologue" tags="" position="300,0" size="100,100">&lt;div class=&quot;page&quot;&gt;&lt;div class=&quot;cote&quot;&gt;&lt;img src=&quot;images/grandes/prologue.jpg&quot; alt=&quot;L’ombre sur les champs&quot;&gt;&lt;/div&gt;&lt;div class=&quot;texte&quot;&gt;&lt;span class=&quot;retour&quot;&gt;[[Couverture-&gt;Couverture]]&lt;/span&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;entete&quot;&gt;&lt;span class=&quot;numero&quot;&gt;Prologue&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;&lt;span&gt;L’ombre sur les champs&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/h1&gt;Kévine posa son arrosoir au bout du sillon. La veille encore, le blé lui arrivait à la taille ; ce matin, les épis pendaient au bout de tiges grises. Il s’accroupit et enfonça les doigts dans la terre : elle était fraîche, les racines bien prises. Rien de ce qu’il avait fait n’expliquait ce qu’il voyait.
+</script><tw-passagedata pid="1" name="Couverture" tags="" position="150,0" size="100,100">&lt;div class=&quot;garde&quot;&gt;&lt;img class=&quot;garde-image&quot; src=&quot;images/couverture.jpg&quot; alt=&quot;&quot;&gt;&lt;div class=&quot;garde-texte&quot;&gt;&lt;span class=&quot;surtitre&quot;&gt;Une histoire dont le lecteur est le héros&lt;/span&gt;&lt;h1 class=&quot;garde-titre&quot;&gt;&lt;span&gt;Le fermier au chapeau de paille&lt;/span&gt;&lt;/h1&gt;&lt;span class=&quot;noms&quot;&gt;Antoine et Émile&lt;/span&gt;&lt;span class=&quot;resume&quot;&gt;Quand l’ombre d’un dragon condamne les récoltes de son village, Kévine, jeune fermier au chapeau de paille, part affronter l’inconnu avec Gertrude, sa fidèle renarde. Pour sauver les siens, il devra découvrir qu’un héros peut venir des champs.&lt;/span&gt;&lt;div class=&quot;elan commencer&quot;&gt;[[Commencer l’aventure-&gt;Prologue]]&lt;/div&gt;&lt;div class=&quot;secondaires&quot;&gt;[[Comment est née cette histoire-&gt;Comment est née cette histoire]][[L’arbre de l’histoire-&gt;L’arbre de l’histoire]] (link: &quot;Les autres livres&quot;)[(goto-url: &quot;https://labaixbidouille.github.io/la-quete-du-curry/&quot;)]&lt;/div&gt;&lt;span class=&quot;mention&quot;&gt;Fan fiction librement inspirée du jeu vidéo Minecraft · Ce livre n’est ni approuvé ni soutenu par Mojang Studios ou Microsoft.&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="2" name="Prologue" tags="" position="300,0" size="100,100">&lt;div class=&quot;page&quot;&gt;&lt;div class=&quot;cote&quot;&gt;&lt;img src=&quot;images/grandes/prologue.jpg&quot; alt=&quot;L’ombre sur les champs&quot;&gt;&lt;/div&gt;&lt;div class=&quot;texte&quot;&gt;&lt;span class=&quot;retour&quot;&gt;[[Couverture-&gt;Couverture]]&lt;/span&gt;&lt;h1 class=&quot;chapitre&quot;&gt;&lt;span class=&quot;entete&quot;&gt;&lt;span class=&quot;numero&quot;&gt;Prologue&lt;/span&gt;&lt;span class=&quot;titre&quot;&gt;&lt;span&gt;L’ombre sur les champs&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/h1&gt;Kévine posa son arrosoir au bout du sillon. La veille encore, le blé lui arrivait à la taille ; ce matin, les épis pendaient au bout de tiges grises. Il s’accroupit et enfonça les doigts dans la terre : elle était fraîche, les racines bien prises. Rien de ce qu’il avait fait n’expliquait ce qu’il voyait.
 
 Un souffle froid passa sur sa nuque. Kévine retint son chapeau et leva les yeux. Une ombre immense glissait sur les cultures, portée par deux ailes dentelées qui semblaient effleurer les nuages. Elle disparut derrière la montagne. Partout où elle était passée, les épis se courbaient ; tout près de lui, l’un d’eux se brisa.
 

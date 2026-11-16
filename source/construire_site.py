@@ -207,7 +207,7 @@ tw-passage:has(.garde) { max-width: none; width: 100%; margin: 0; }
 /* Liens secondaires de la page de garde et lien de retour à la couverture en haut des chapitres */
 .garde .secondaires { justify-content: flex-start; margin-top: clamp(0.9em, 2.4vh, 1.5em); }
 .retour { display: block; margin: 0 0 1.4em; line-height: 1.6; }
-.autres-livres, .retour tw-link, .retour .enchantment-link { font-size: 0.95rem; }
+.retour tw-link, .retour .enchantment-link { font-size: 0.95rem; }
 .retour tw-link::before, .retour .enchantment-link::before { content: "← "; }
 
 /* Liens secondaires (couverture, fin, contexte) : petits boutons encadrés, distincts du grand lien pixel
@@ -265,13 +265,6 @@ tw-passage:has(.garde) { max-width: none; width: 100%; margin: 0; }
   .cote { position: relative; top: auto; }
 }
 
-/* Lien discret vers la page qui réunit tous les livres de l'atelier, en bas à droite de la page de garde */
-.garde { position: relative; }
-.autres-livres { position: absolute; right: 0.4em; bottom: 0.6em; z-index: 3; text-decoration: none; }
-.autres-livres::after { content: " →"; }
-@media (max-width: 760px) {
-  .autres-livres { position: static; order: 99; align-self: center; display: block; text-align: center; margin: 1.2em auto 0.4em; }
-}
 """
 
 
@@ -456,13 +449,13 @@ def passage_chapitre(ch, mention):
 
 def passage_garde(mention):
     """Page de garde : l'image de couverture de Manon à gauche, le titre et le bouton à droite, sans défilement."""
-    return ('<div class="garde"><a class="autres-livres" href="https://labaixbidouille.github.io/la-quete-du-curry/" target="_top">Découvrir les autres livres</a><img class="garde-image" src="images/couverture.jpg" alt="">'
+    return ('<div class="garde"><img class="garde-image" src="images/couverture.jpg" alt="">'
             '<div class="garde-texte"><span class="surtitre">Une histoire dont le lecteur est le héros</span>'
             f'<h1 class="garde-titre"><span>{TITRE}</span></h1><span class="noms">{AUTEURS}</span>'
             f'<span class="resume">{SYNOPSIS}</span>'
             f'<div class="elan commencer">{lien("Commencer l’aventure", "Prologue")}</div>'
             f'<div class="secondaires">{lien("Comment est née cette histoire", "Comment est née cette histoire")}'
-            f'{lien("L’arbre de l’histoire", "L’arbre de l’histoire")}</div>'
+            f'{lien("L’arbre de l’histoire", "L’arbre de l’histoire")} (link: "Les autres livres")[(goto-url: "https://labaixbidouille.github.io/la-quete-du-curry/")]</div>'
             f'<span class="mention">{AVERTISSEMENT_COURT}</span></div></div>')
 
 
