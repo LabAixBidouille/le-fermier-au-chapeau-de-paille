@@ -459,6 +459,7 @@ def passage_chapitre(ch, mention):
     return f'<div class="page sans-image">{texte}</div>'
 
 
+# Le patron du dé du livret, à télécharger si on l'a perdu (outils/)
 def passage_garde(mention):
     """Page de garde : l'image de couverture de Manon à gauche, le titre et le bouton à droite, sans défilement."""
     return ('<div class="garde"><a class="autres-livres" href="https://labaixbidouille.github.io/la-quete-du-curry/" target="_top">Découvrir les autres livres</a><img class="garde-image" src="images/couverture.jpg" alt="">'
@@ -467,7 +468,7 @@ def passage_garde(mention):
             f'<span class="resume">{SYNOPSIS}</span>'
             f'<div class="elan commencer">{lien("Commencer l’aventure", "Prologue")}</div>'
             f'<div class="secondaires">{lien("Comment est née cette histoire", "Comment est née cette histoire")}'
-            f'{lien("L’arbre de l’histoire", "L’arbre de l’histoire")}</div>'
+            f'{lien("L’arbre de l’histoire", "L’arbre de l’histoire")} (link-repeat: "Le dé à fabriquer")[(open-url: "outils/Le_fermier_au_chapeau_de_paille_de_a_fabriquer.pdf")]</div>'
             f'<span class="mention">{AVERTISSEMENT_COURT}</span></div></div>')
 
 
